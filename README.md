@@ -4,6 +4,12 @@
 
 ---
 
+
+https://github.com/user-attachments/assets/11be990d-d462-4740-a447-e5d4835708c6
+
+
+---
+
 ## Konsep & Mekanik Utama
 
 Permainan dijalankan melalui dua sudut pandang dunia yang terhubung secara langsung dalam satu layar:
