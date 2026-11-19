@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dps2e2s2kgdeb"]
+
+[ext_resource type="Script" uid="uid://cea1u8l7yhx5v" path="res://mechanics/laptop_terminal.gd" id="1_nims6"]
+
+[node name="LaptopTerminal" type="CanvasLayer" unique_id=1518743068]
+visible = false
+script = ExtResource("1_nims6")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1515633163]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.5
+offset_top = -42.5
+offset_right = 34.5
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1156331870]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=786877304]
+layout_mode = 2
+text = "[ TERMINAL AKTIF - KETIK COMMAND ] "
+horizontal_alignment = 1
+
+[node name="CommandLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=655743001]
+layout_mode = 2
+text = "sudo zap"
+horizontal_alignment = 1
+
+[node name="CommandInput" type="LineEdit" parent="PanelContainer/VBoxContainer" unique_id=752723225]
+layout_mode = 2
+placeholder_text = "Ketik lalu Enter"
+alignment = 1

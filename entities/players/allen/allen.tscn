@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b2fyy7rlorhk5"]
+
+[ext_resource type="PackedScene" uid="uid://th6ghmqnm5rg" path="res://entities/players/base_player/base_player.tscn" id="1_1hfh5"]
+
+[node name="Allen" unique_id=960427418 instance=ExtResource("1_1hfh5")]
+
+[node name="ColorRect" parent="." index="2" unique_id=88285176]
+color = Color(0.11222548, 0.3556901, 0.7626215, 1)

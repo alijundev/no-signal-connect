@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cw0o6tit76upc"]
+
+[ext_resource type="PackedScene" uid="uid://b2fyy7rlorhk5" path="res://entities/players/allen/allen.tscn" id="1_0o4od"]
+[ext_resource type="PackedScene" uid="uid://bk63nen2jorw" path="res://mechanics/signal_tower/signal_tower.tscn" id="2_wgb22"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
+size = Vector2(1280, 40)
+
+[node name="Surface01" type="Node2D" unique_id=1535014517]
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1223868334]
+position = Vector2(640, 340)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1510490145]
+shape = SubResource("RectangleShape2D_bsltl")
+
+[node name="ColorRect" type="ColorRect" parent="Floor" unique_id=639507500]
+offset_left = -640.0
+offset_top = -20.0
+offset_right = 640.0
+offset_bottom = 20.0
+color = Color(1, 0.6306581, 0.50442874, 1)
+
+[node name="Allen" parent="." unique_id=960427418 instance=ExtResource("1_0o4od")]
+position = Vector2(463, 281)
+
+[node name="SignalTower" parent="." unique_id=1235392491 instance=ExtResource("2_wgb22")]
+position = Vector2(1012, 269)

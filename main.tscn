@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://bt8dpaipvybtf"]
+
+[ext_resource type="PackedScene" uid="uid://cw0o6tit76upc" path="res://levels/stage_01/surface_01.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://c2q4b1ombel3v" path="res://main.gd" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://by4ynhokan4gd" path="res://levels/stage_01/underground_01.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://b1u3jgb6s6p8g" path="res://ui/hud_dual_screen.tscn" id="3_h2yge"]
+
+[node name="Main" type="Control" unique_id=936384275]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1bvp3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1520080516]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=118145116]
+layout_mode = 2
+size_flags_vertical = 3
+stretch = true
+
+[node name="TopViewport" type="SubViewport" parent="VBoxContainer/TopContainer" unique_id=1382553764]
+handle_input_locally = false
+size = Vector2i(1280, 358)
+render_target_update_mode = 4
+
+[node name="Surface01" parent="VBoxContainer/TopContainer/TopViewport" unique_id=1535014517 instance=ExtResource("1_0xm2m")]
+
+[node name="BottomContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1318039693]
+layout_mode = 2
+size_flags_vertical = 3
+stretch = true
+
+[node name="BottomViewport" type="SubViewport" parent="VBoxContainer/BottomContainer" unique_id=159810469]
+handle_input_locally = false
+size = Vector2i(1280, 358)
+render_target_update_mode = 4
+
+[node name="Underground01" parent="VBoxContainer/BottomContainer/BottomViewport" unique_id=1043317867 instance=ExtResource("2_h2yge")]
+
+[node name="HudDualScreen" parent="." unique_id=643236475 instance=ExtResource("3_h2yge")]

@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://by4ynhokan4gd"]
+
+[ext_resource type="PackedScene" uid="uid://c850y6gdphibe" path="res://entities/players/luna/luna.tscn" id="1_s2rt8"]
+[ext_resource type="Script" uid="uid://e6cpnmi4uwp8" path="res://components/hitbox_component.gd" id="2_0i5ml"]
+[ext_resource type="PackedScene" uid="uid://cub7n5emo2kju" path="res://entities/enemies/broken_robot/broken_robot.tscn" id="3_0xy71"]
+[ext_resource type="PackedScene" uid="uid://b0ceim5d5dhox" path="res://mechanics/stage_exit/stage_exit.tscn" id="4_ov4c0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
+size = Vector2(1280, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xy71"]
+size = Vector2(32, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ov4c0"]
+size = Vector2(32, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tv6e2"]
+size = Vector2(40, 40)
+
+[node name="Underground01" type="Node2D" unique_id=1043317867]
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1901454910]
+position = Vector2(640, 340)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1055724217]
+shape = SubResource("RectangleShape2D_bsltl")
+
+[node name="ColorRect" type="ColorRect" parent="Floor" unique_id=1360044639]
+offset_left = -640.0
+offset_top = -20.0
+offset_right = 640.0
+offset_bottom = 20.0
+color = Color(1, 0.6862138, 0.61390424, 1)
+
+[node name="Block" type="StaticBody2D" parent="." unique_id=2054475266]
+position = Vector2(1265, 301)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Block" unique_id=68876234]
+shape = SubResource("RectangleShape2D_0xy71")
+
+[node name="ColorRect" type="ColorRect" parent="Block" unique_id=684633965]
+offset_left = -16.0
+offset_top = -20.0
+offset_right = 16.0
+offset_bottom = 20.0
+color = Color(1, 0.6862138, 0.61390424, 1)
+
+[node name="Block2" type="StaticBody2D" parent="." unique_id=2093029278]
+position = Vector2(16, 301)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Block2" unique_id=985086453]
+shape = SubResource("RectangleShape2D_ov4c0")
+
+[node name="ColorRect" type="ColorRect" parent="Block2" unique_id=1499877632]
+offset_left = -16.0
+offset_top = -20.0
+offset_right = 16.0
+offset_bottom = 20.0
+color = Color(1, 0.6862138, 0.61390424, 1)
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1902307384]
+position = Vector2(733, 300)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("2_0i5ml")
+metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1805460658]
+shape = SubResource("RectangleShape2D_tv6e2")
+
+[node name="ColorRect" type="ColorRect" parent="HurtboxComponent" unique_id=2057052163]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1, 0, 0, 1)
+
+[node name="BrokenRobot" parent="." unique_id=1996399772 instance=ExtResource("3_0xy71")]
+position = Vector2(435, 292)
+
+[node name="LunaUnderground" parent="." unique_id=960427418 instance=ExtResource("1_s2rt8")]
+position = Vector2(196, 286)
+
+[node name="StageExit" parent="." unique_id=337521219 instance=ExtResource("4_ov4c0")]
+position = Vector2(1190, 271)

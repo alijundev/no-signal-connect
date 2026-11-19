@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bpbdgtsj1iigy"]
+
+[ext_resource type="Script" uid="uid://cmmd3d8hdptn0" path="res://mechanics/lightning_bolt.gd" id="1_enobm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
+size = Vector2(32, 12)
+
+[node name="LightningBolt" type="Area2D" unique_id=257526385]
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("1_enobm")
+metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1636764400]
+shape = SubResource("RectangleShape2D_bsltl")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1217527760]
+offset_left = -16.0
+offset_top = -6.0
+offset_right = 16.0
+offset_bottom = 6.0
