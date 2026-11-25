@@ -1,14 +1,51 @@
-[gd_scene format=3 uid="uid://c850y6gdphibe"]
+[gd_scene load_steps=5 format=3 uid="uid://c850y6gdphibe"]
 
 [ext_resource type="PackedScene" uid="uid://th6ghmqnm5rg" path="res://entities/players/base_player/base_player.tscn" id="1_2tl0e"]
 [ext_resource type="Script" uid="uid://dyle15e6ypk3i" path="res://entities/players/luna/luna.gd" id="2_2gfy3"]
 [ext_resource type="PackedScene" uid="uid://dps2e2s2kgdeb" path="res://mechanics/laptop_terminal/laptop_terminal.tscn" id="3_s53pv"]
 
-[node name="Luna" unique_id=960427418 instance=ExtResource("1_2tl0e")]
+[sub_resource type="SpriteFrames" id="SpriteFrames_2tl0e"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"attack_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"attack_right",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle_right",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}]
+
+[node name="Luna" instance=ExtResource("1_2tl0e")]
 script = ExtResource("2_2gfy3")
 assigned_screen = 1
 
-[node name="ColorRect" parent="." index="2" unique_id=88285176]
+[node name="ColorRect" parent="." index="2"]
 color = Color(1, 0.49803922, 1, 1)
 
-[node name="LaptopTerminal" parent="." index="6" unique_id=1518743068 instance=ExtResource("3_s53pv")]
+[node name="LaptopTerminal" parent="." index="6" instance=ExtResource("3_s53pv")]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="7"]
+sprite_frames = SubResource("SpriteFrames_2tl0e")
+animation = &"idle_right"

@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/screens/game_scene.gd" id="1_game"]
+[ext_resource type="PackedScene" path="res://scenes/components/background.tscn" id="2_bg"]
+
+[node name="GameScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_game")
+
+[node name="Background" parent="." instance=ExtResource("2_bg")]
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Header" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "GAME SCENE"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+text = "PUT YOUR GAME HERE   ESC: BACK TO MENU"
+horizontal_alignment = 1

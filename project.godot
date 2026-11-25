@@ -11,20 +11,20 @@ config_version=5
 [application]
 
 config/name="No Signal, Connect!"
-run/main_scene="uid://bt8dpaipvybtf"
-config/features=PackedStringArray("4.7", "GL Compatibility")
+run/main_scene="uid://din8if8m5ofpt"
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameBridge="*uid://d2lh48yepv5oq"
+Game="*res://scripts/autoload/game.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
 
 [input]
 

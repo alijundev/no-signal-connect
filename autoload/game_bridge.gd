@@ -17,14 +17,14 @@ signal player_health_updated(screen: Screen, current: float, max_val: float)
 signal player_energy_updated(screen: Screen, current: float, max_val: float)
 
 
-var active_screen: Screen = Screen.BOTTOM
+var active_screen: Screen = Screen.TOP
 var is_signal_active: bool = false
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("switch_screen"):
-		active_screen = Screen.TOP if active_screen == Screen.BOTTOM else Screen.BOTTOM
-		screen_switched.emit(active_screen)
-		print(active_screen)
+#func _unhandled_input(event: InputEvent) -> void:
+#	if event.is_action_pressed("switch_screen"):
+#		active_screen = Screen.TOP if active_screen == Screen.BOTTOM else Screen.BOTTOM
+#		screen_switched.emit(active_screen)
+#		print(active_screen)
 
 func trigger_game_over():
 	is_signal_active = false

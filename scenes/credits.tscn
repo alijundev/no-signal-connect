@@ -1,0 +1,103 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/screens/credits.gd" id="1_cr"]
+[ext_resource type="PackedScene" path="res://scenes/components/background.tscn" id="2_bg"]
+[ext_resource type="Script" path="res://scripts/ui/retro_menu.gd" id="3_menu"]
+[ext_resource type="Script" path="res://scripts/ui/retro_button.gd" id="4_btn"]
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cr")
+
+[node name="Background" parent="." instance=ExtResource("2_bg")]
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Header" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Section1" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"SectionLabel"
+text = "DESIGN AND CODE"
+horizontal_alignment = 1
+
+[node name="Body1" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "YOUR NAME HERE"
+horizontal_alignment = 1
+
+[node name="Gap2" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Section2" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"SectionLabel"
+text = "FONT"
+horizontal_alignment = 1
+
+[node name="Body2" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "PRESS START 2P
+THE PRESS START 2P PROJECT AUTHORS
+SIL OPEN FONT LICENSE 1.1"
+horizontal_alignment = 1
+
+[node name="Gap3" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Section3" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"SectionLabel"
+text = "ENGINE"
+horizontal_alignment = 1
+
+[node name="Body3" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+text = "GODOT ENGINE"
+horizontal_alignment = 1
+
+[node name="Gap4" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Menu" type="VBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+script = ExtResource("3_menu")
+
+[node name="BackButton" type="Button" parent="Content/Menu"]
+custom_minimum_size = Vector2(192, 24)
+layout_mode = 2
+text = "BACK"
+script = ExtResource("4_btn")
+press_sfx = "back"

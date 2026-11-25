@@ -1,60 +1,57 @@
-[gd_scene format=3 uid="uid://b1u3jgb6s6p8g"]
+[gd_scene load_steps=3 format=3 uid="uid://b1u3jgb6s6p8g"]
 
 [ext_resource type="Script" uid="uid://bbk3fg6f4r0rp" path="res://ui/hud_dual_screen.gd" id="1_egntw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ykp6k"]
 bg_color = Color(0.48040402, 0.9999997, 0.493371, 1)
 
-[node name="HudDualScreen" type="CanvasLayer" unique_id=643236475]
+[node name="HudDualScreen" type="CanvasLayer"]
 script = ExtResource("1_egntw")
 
-[node name="TopHUD" type="MarginContainer" parent="." unique_id=334336731]
+[node name="TopHUD" type="MarginContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 85.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopHUD" unique_id=790098237]
+[node name="VBoxContainer" type="VBoxContainer" parent="TopHUD"]
 layout_mode = 2
 
-[node name="TopTitle" type="Label" parent="TopHUD/VBoxContainer" unique_id=657663381]
+[node name="TopTitle" type="Label" parent="TopHUD/VBoxContainer"]
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="TopHPBar" type="ProgressBar" parent="TopHUD/VBoxContainer" unique_id=479542890]
+[node name="TopHPBar" type="ProgressBar" parent="TopHUD/VBoxContainer"]
 custom_minimum_size = Vector2(200, 18)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_ykp6k")
 show_percentage = false
 
-[node name="TopEnergyBar" type="ProgressBar" parent="TopHUD/VBoxContainer" unique_id=1037188940]
+[node name="TopEnergyBar" type="ProgressBar" parent="TopHUD/VBoxContainer"]
 custom_minimum_size = Vector2(200, 18)
 layout_mode = 2
 show_percentage = false
 
-[node name="BottomHUD" type="MarginContainer" parent="." unique_id=2126323976]
-anchors_preset = -1
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="BottomHUD" type="MarginContainer" parent="."]
+offset_right = 216.0
+offset_bottom = 79.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BottomHUD" unique_id=1688144164]
+[node name="VBoxContainer" type="VBoxContainer" parent="BottomHUD"]
 layout_mode = 2
 
-[node name="BottomTitle" type="Label" parent="BottomHUD/VBoxContainer" unique_id=1614203778]
+[node name="BottomTitle" type="Label" parent="BottomHUD/VBoxContainer"]
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="BottomHPBar" type="ProgressBar" parent="BottomHUD/VBoxContainer" unique_id=872381201]
+[node name="BottomHPBar" type="ProgressBar" parent="BottomHUD/VBoxContainer"]
 custom_minimum_size = Vector2(200, 18)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_ykp6k")
 show_percentage = false
 
-[node name="BottomEnergyBar" type="ProgressBar" parent="BottomHUD/VBoxContainer" unique_id=1663886441]
+[node name="BottomEnergyBar" type="ProgressBar" parent="BottomHUD/VBoxContainer"]
 custom_minimum_size = Vector2(200, 18)
 layout_mode = 2
 show_percentage = false

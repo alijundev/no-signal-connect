@@ -1,0 +1,101 @@
+[gd_scene load_steps=5 format=3 uid="uid://din8if8m5ofpt"]
+
+[ext_resource type="Script" uid="uid://di5kiyw88q1yd" path="res://scripts/screens/main_menu.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://dhjvqg405bf4h" path="res://scripts/ui/pixel_title.gd" id="3_title"]
+[ext_resource type="Script" uid="uid://cbhwudwagpeym" path="res://scripts/ui/retro_menu.gd" id="4_menu"]
+[ext_resource type="Script" uid="uid://bqspgtnijlaq" path="res://scripts/ui/retro_button.gd" id="5_btn"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("3_title")
+text = "NO SIGNAL, CONNECT!"
+font_size = 24
+
+[node name="Subtitle" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+text = "WAITING FOR SIGNAL"
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Menu" type="VBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 4
+script = ExtResource("4_menu")
+
+[node name="PlayButton" type="Button" parent="Content/Menu"]
+custom_minimum_size = Vector2(208, 24)
+layout_mode = 2
+text = "PLAY"
+script = ExtResource("5_btn")
+press_sfx = "start"
+
+[node name="SettingsButton" type="Button" parent="Content/Menu"]
+custom_minimum_size = Vector2(208, 24)
+layout_mode = 2
+text = "SETTINGS"
+script = ExtResource("5_btn")
+
+[node name="FeedbackButton" type="Button" parent="Content/Menu"]
+custom_minimum_size = Vector2(208, 24)
+layout_mode = 2
+text = "FEEDBACK"
+script = ExtResource("5_btn")
+
+[node name="CreditsButton" type="Button" parent="Content/Menu"]
+custom_minimum_size = Vector2(208, 24)
+layout_mode = 2
+text = "CREDITS"
+script = ExtResource("5_btn")
+
+[node name="ExitButton" type="Button" parent="Content/Menu"]
+custom_minimum_size = Vector2(208, 24)
+layout_mode = 2
+text = "EXIT"
+script = ExtResource("5_btn")
+press_sfx = "back"
+
+[node name="Footer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -20.0
+offset_right = -12.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Version" type="Label" parent="Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HintLabel"
+text = "V0.1.0"

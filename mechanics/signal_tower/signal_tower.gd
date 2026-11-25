@@ -1,8 +1,7 @@
 extends Area2D
 
 @onready var prompt_label: Label = $PromptLabel
-@onready var color_rect: ColorRect = $ColorRect
-
+@onready var sprite: Sprite2D = $Sprite2D
 @onready var cable_puzzle: CanvasLayer = $CablePuzzle
 
 var is_activated: bool = false
@@ -28,7 +27,9 @@ func _on_body_exited(body: Node2D):
 func activate_tower():
 	is_activated = true
 	prompt_label.visible = false
-	color_rect.color = Color.GREEN
+	# Efek menyala: tower jadi kehijauan, lalu berdenyut sebentar
+	var tween := create_tween()
+	tween.tween_property(sprite, "modulate", Color(0.6, 1.0, 0.6), 0.4)
 	GameBridge.set_signal_active(true)
 
 func _unhandled_input(event: InputEvent) -> void:

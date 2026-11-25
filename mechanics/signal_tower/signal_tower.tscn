@@ -1,29 +1,24 @@
-[gd_scene format=3 uid="uid://bk63nen2jorw"]
+[gd_scene load_steps=6 format=3 uid="uid://bk63nen2jorw"]
 
 [ext_resource type="Script" uid="uid://no17o0ruhwjc" path="res://mechanics/signal_tower/signal_tower.gd" id="1_yx6qi"]
 [ext_resource type="PackedScene" uid="uid://ves4gu5a2s80" path="res://mechanics/cable_puzzle/cable_puzzle.tscn" id="2_p4xfq"]
+[ext_resource type="Texture2D" uid="uid://dseg84uno3xcw" path="res://assets/Maps/Tower.png" id="3_nk340"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(80, 100)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tv6e2"]
 
-[node name="SignalTower" type="Area2D" unique_id=1235392491]
+[node name="SignalTower" type="Area2D"]
+z_index = -1
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("1_yx6qi")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=975002289]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_bsltl")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=2045479974]
-offset_left = -40.0
-offset_top = -50.0
-offset_right = 40.0
-offset_bottom = 50.0
-color = Color(0.42639464, 0.42639467, 0.42639467, 1)
-
-[node name="PromptLabel" type="Label" parent="." unique_id=419614047]
+[node name="PromptLabel" type="Label" parent="."]
 offset_left = -80.0
 offset_top = -82.0
 offset_right = 81.0
@@ -31,4 +26,11 @@ offset_bottom = -59.0
 text = "[E] Nyalakan Menara"
 label_settings = SubResource("LabelSettings_tv6e2")
 
-[node name="CablePuzzle" parent="." unique_id=267502316 instance=ExtResource("2_p4xfq")]
+[node name="CablePuzzle" parent="." instance=ExtResource("2_p4xfq")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -140)
+rotation = 0.0008115085
+scale = Vector2(3, 3)
+texture = ExtResource("3_nk340")
