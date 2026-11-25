@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://din8if8m5ofpt"]
+[gd_scene format=3 uid="uid://din8if8m5ofpt"]
 
 [ext_resource type="Script" uid="uid://di5kiyw88q1yd" path="res://scripts/screens/main_menu.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://dhjvqg405bf4h" path="res://scripts/ui/pixel_title.gd" id="3_title"]
 [ext_resource type="Script" uid="uid://cbhwudwagpeym" path="res://scripts/ui/retro_menu.gd" id="4_menu"]
 [ext_resource type="Script" uid="uid://bqspgtnijlaq" path="res://scripts/ui/retro_button.gd" id="5_btn"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=19327990]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=1125093069]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Title" type="Control" parent="Content"]
+[node name="Title" type="Control" parent="Content" unique_id=739172483]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 mouse_filter = 2
@@ -32,56 +32,56 @@ script = ExtResource("3_title")
 text = "NO SIGNAL, CONNECT!"
 font_size = 24
 
-[node name="Subtitle" type="Label" parent="Content"]
+[node name="Subtitle" type="Label" parent="Content" unique_id=1723708278]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 text = "WAITING FOR SIGNAL"
 horizontal_alignment = 1
 
-[node name="Gap" type="Control" parent="Content"]
+[node name="Gap" type="Control" parent="Content" unique_id=1451329880]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Menu" type="VBoxContainer" parent="Content"]
+[node name="Menu" type="VBoxContainer" parent="Content" unique_id=1070163680]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 4
 script = ExtResource("4_menu")
 
-[node name="PlayButton" type="Button" parent="Content/Menu"]
+[node name="PlayButton" type="Button" parent="Content/Menu" unique_id=2077485952]
 custom_minimum_size = Vector2(208, 24)
 layout_mode = 2
 text = "PLAY"
 script = ExtResource("5_btn")
 press_sfx = "start"
 
-[node name="SettingsButton" type="Button" parent="Content/Menu"]
+[node name="SettingsButton" type="Button" parent="Content/Menu" unique_id=1078752724]
 custom_minimum_size = Vector2(208, 24)
 layout_mode = 2
 text = "SETTINGS"
 script = ExtResource("5_btn")
 
-[node name="FeedbackButton" type="Button" parent="Content/Menu"]
+[node name="FeedbackButton" type="Button" parent="Content/Menu" unique_id=2023172357]
 custom_minimum_size = Vector2(208, 24)
 layout_mode = 2
 text = "FEEDBACK"
 script = ExtResource("5_btn")
 
-[node name="CreditsButton" type="Button" parent="Content/Menu"]
+[node name="CreditsButton" type="Button" parent="Content/Menu" unique_id=915389094]
 custom_minimum_size = Vector2(208, 24)
 layout_mode = 2
 text = "CREDITS"
 script = ExtResource("5_btn")
 
-[node name="ExitButton" type="Button" parent="Content/Menu"]
+[node name="ExitButton" type="Button" parent="Content/Menu" unique_id=1408934301]
 custom_minimum_size = Vector2(208, 24)
 layout_mode = 2
 text = "EXIT"
 script = ExtResource("5_btn")
 press_sfx = "back"
 
-[node name="Footer" type="HBoxContainer" parent="."]
+[node name="Footer" type="HBoxContainer" parent="." unique_id=110505936]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -94,7 +94,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Version" type="Label" parent="Footer"]
+[node name="Version" type="Label" parent="Footer" unique_id=1316890668]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HintLabel"
