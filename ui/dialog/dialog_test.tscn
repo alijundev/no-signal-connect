@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://f86ojbuaqjey"]
+
+[ext_resource type="Script" uid="uid://cung52mngb3h4" path="res://ui/dialog/dialog_test.gd" id="1_j3per"]
+[ext_resource type="PackedScene" uid="uid://cbeo85r0m8vxw" path="res://ui/dialog/dialog_box.tscn" id="2_e4ipt"]
+
+[node name="DialogTest" type="Node" unique_id=194886842]
+script = ExtResource("1_j3per")
+
+[node name="DialogBox" parent="." unique_id=1415740391 instance=ExtResource("2_e4ipt")]

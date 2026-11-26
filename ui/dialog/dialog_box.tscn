@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cbeo85r0m8vxw"]
+
+[ext_resource type="Script" uid="uid://ncn4yikx055k" path="res://ui/dialog/dialog_box.gd" id="1_mks8r"]
+[ext_resource type="Texture2D" uid="uid://djx64ncii0obq" path="res://assets/UI/chatbox boy.png" id="2_qjq1j"]
+
+[node name="DialogBox" type="CanvasLayer" unique_id=1415740391]
+script = ExtResource("1_mks8r")
+box_texture = ExtResource("2_qjq1j")
