@@ -2,7 +2,13 @@
 
 [ext_resource type="Script" uid="uid://ncn4yikx055k" path="res://ui/dialog/dialog_box.gd" id="1_mks8r"]
 [ext_resource type="Texture2D" uid="uid://djx64ncii0obq" path="res://assets/UI/chatbox boy.png" id="2_qjq1j"]
+[ext_resource type="Texture2D" uid="uid://d1chuhokjggrl" path="res://assets/UI/chatbox girl.png" id="3_t46pa"]
+[ext_resource type="AudioStream" uid="uid://c0jgg74h0gr2y" path="res://assets/audio/audio boy.wav" id="4_iu5e5"]
+[ext_resource type="AudioStream" uid="uid://b3voq3ogisxwd" path="res://assets/audio/audio girl.wav" id="5_vnrp8"]
 
 [node name="DialogBox" type="CanvasLayer" unique_id=1415740391]
 script = ExtResource("1_mks8r")
-box_texture = ExtResource("2_qjq1j")
+allen_box = ExtResource("2_qjq1j")
+luna_box = ExtResource("3_t46pa")
+allen_voice = ExtResource("4_iu5e5")
+luna_voice = ExtResource("5_vnrp8")

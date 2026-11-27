@@ -6,6 +6,7 @@ signal settings_changed
 
 const SCENE_MAIN_MENU := "res://scenes/main_menu.tscn"
 const SCENE_GAME := "res://main.tscn"
+const SCENE_INTRO := "res://scenes/intro.tscn"
 const SCENE_SETTINGS := "res://scenes/settings.tscn"
 const SCENE_FEEDBACK := "res://scenes/feedback.tscn"
 const SCENE_CREDITS := "res://scenes/credits.tscn"
@@ -195,7 +196,7 @@ func quit_game() -> void:
 	get_tree().quit()
 
 func _apply_mode(path: String) -> void:
-	_in_game = (path == SCENE_GAME)
+	_in_game = (path == SCENE_GAME or path == SCENE_INTRO)
 	var win := get_tree().root
 	win.content_scale_size = GAME_SIZE if _in_game else MENU_SIZE
 	win.theme = null if _in_game else RetroTheme.build()

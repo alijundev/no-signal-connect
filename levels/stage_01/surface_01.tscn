@@ -229,4 +229,4 @@ position = Vector2(45, 436)
 
 [node name="SignalTower" parent="." unique_id=406080753 instance=ExtResource("2_wgb22")]
 texture_filter = 1
-position = Vector2(1177, 434)
+position = Vector2(1181, 381)

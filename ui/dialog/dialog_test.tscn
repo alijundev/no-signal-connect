@@ -2,8 +2,12 @@
 
 [ext_resource type="Script" uid="uid://cung52mngb3h4" path="res://ui/dialog/dialog_test.gd" id="1_j3per"]
 [ext_resource type="PackedScene" uid="uid://cbeo85r0m8vxw" path="res://ui/dialog/dialog_box.tscn" id="2_e4ipt"]
+[ext_resource type="Texture2D" uid="uid://djx64ncii0obq" path="res://assets/UI/chatbox boy.png" id="3_85tv6"]
+[ext_resource type="Texture2D" uid="uid://d1chuhokjggrl" path="res://assets/UI/chatbox girl.png" id="4_8twal"]
 
 [node name="DialogTest" type="Node" unique_id=194886842]
 script = ExtResource("1_j3per")
 
 [node name="DialogBox" parent="." unique_id=1415740391 instance=ExtResource("2_e4ipt")]
+allen_box = ExtResource("3_85tv6")
+luna_box = ExtResource("4_8twal")
