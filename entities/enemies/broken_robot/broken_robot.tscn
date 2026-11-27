@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cub7n5emo2kju"]
 
-[ext_resource type="Script" uid="uid://dewr5w2xriu35" path="res://entities/enemies/broken_robot.gd" id="1_aiumg"]
+[ext_resource type="Script" uid="uid://dewr5w2xriu35" path="res://entities/enemies/broken_robot/broken_robot.gd" id="1_aiumg"]
 [ext_resource type="Script" uid="uid://bxo1ck8obk40n" path="res://components/health_component.gd" id="1_mecv4"]
 [ext_resource type="Script" uid="uid://b6uevgx14m2fk" path="res://components/hurtbox_component.gd" id="2_aiumg"]
 [ext_resource type="Script" uid="uid://e6cpnmi4uwp8" path="res://components/hitbox_component.gd" id="3_tnuj8"]
@@ -14,6 +14,8 @@ size = Vector2(32, 48)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1mcbs"]
 size = Vector2(34, 46)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_rnang"]
+
 [node name="BrokenRobot" type="CharacterBody2D" unique_id=1996399772]
 collision_layer = 4
 script = ExtResource("1_aiumg")
@@ -22,6 +24,7 @@ script = ExtResource("1_aiumg")
 shape = SubResource("RectangleShape2D_bsltl")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1947871874]
+visible = false
 offset_left = -16.0
 offset_top = -24.0
 offset_right = 16.0
@@ -54,3 +57,6 @@ shape = SubResource("RectangleShape2D_1mcbs")
 
 [node name="WallCheck" type="RayCast2D" parent="." unique_id=1386259373]
 target_position = Vector2(24, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=617096869]
+sprite_frames = SubResource("SpriteFrames_rnang")

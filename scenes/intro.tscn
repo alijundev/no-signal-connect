@@ -681,7 +681,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"walk_right",
-"speed": 7.0
+"speed": 5.0
 }]
 
 [node name="Intro" type="Node2D" unique_id=1093198340]
@@ -733,6 +733,7 @@ position = Vector2(-4, 341)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_s13lp")
 animation = &"walk_right"
+frame_progress = 0.6095852
 
 [node name="Luna" type="AnimatedSprite2D" parent="." unique_id=1048271068]
 texture_filter = 1
@@ -740,6 +741,7 @@ position = Vector2(75, 344)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_m4rpt")
 animation = &"walk_right"
+frame_progress = 0.37775186
 
 [node name="AllenStop" type="Marker2D" parent="." unique_id=253490555]
 position = Vector2(181, 384)
