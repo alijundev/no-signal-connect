@@ -1,0 +1,67 @@
+name: CI Build Validation
+
+on:
+  push:
+    branches: ["**"]
+    tags-ignore: ["v*"]
+  pull_request:
+
+env:
+  GODOT_VERSION: "4.7"
+  GODOT_RELEASE_TAG: "4.7-stable"
+  TEMPLATE_DIR_NAME: "4.7.stable"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        run: |
+          BASE_URL="https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE_TAG}"
+          curl -sL "${BASE_URL}/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64.zip" -o godot.zip
+          unzip -q godot.zip -d godot_bin
+          chmod +x godot_bin/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64
+
+      - name: Import & Validate Project
+        run: |
+          GODOT_BIN="./godot_bin/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64"
+          $GODOT_BIN --headless --import 2>&1 | tee import.log
+          # Fail if Godot reports script errors
+          if grep -qi "SCRIPT ERROR\|Cannot preload\|Parse Error" import.log; then
+            echo "::error::Godot reported script/parse errors during import"
+            exit 1
+          fi
+
+      - name: Scan for Broken res:// References
+        run: |
+          python3 -c "
+          import os, re, sys
+          root = '.'
+          all_files = set()
+          for dp, dirs, files in os.walk(root):
+              dirs[:] = [d for d in dirs if d not in ('.godot', '.git')]
+              for f in files:
+                  all_files.add(os.path.relpath(os.path.join(dp, f), root))
+          res_re = re.compile(r'res://([^\s\"\\\\)]+)')
+          errors = 0
+          for dp, dirs, files in os.walk(root):
+              dirs[:] = [d for d in dirs if d not in ('.godot', '.git')]
+              for f in files:
+                  if not f.endswith(('.gd', '.tscn', '.tres', '.cfg')):
+                      continue
+                  fp = os.path.join(dp, f)
+                  text = open(fp, 'r', errors='ignore').read()
+                  for m in res_re.finditer(text):
+                      ref = m.group(1)
+                      if '%s' in ref or '...' in ref:
+                          continue
+                      if ref not in all_files and not any(a.startswith(ref) for a in all_files):
+                          print(f'::error file={os.path.relpath(fp, root)}::Broken ref: res://{ref}')
+                          errors += 1
+          if errors:
+              sys.exit(1)
+          print('All res:// references OK')
+          "

@@ -26,6 +26,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\..\builds\windows\NoSignalConnect.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\builds\windows\*.pck"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 
 [Icons]
 Name: "{group}\No Signal, Connect!"; Filename: "{app}\NoSignalConnect.exe"

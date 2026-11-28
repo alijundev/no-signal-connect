@@ -129,4 +129,26 @@ no-signal-connect/
 * [x] Sistem item *Buff / Power-Up* acak berdurasi (`RandomChest` & drop musuh) & *One-Way Gate*
 * [x] Layar *Main Menu*, *Pause Menu*, *Game Over*, & *Win Screen*
 * [x] Integrasi aset *2D pixel art*, SFX gameplay & dialog, serta konsistensi desain UI
-* [ ] *Final Playtest* & *export build* Windows & Linux v1.0
+* [x] *Final Playtest* & *export build* Windows, Linux & Web v1.0
+
+---
+
+## CI/CD & Release
+
+Proyek ini menggunakan **GitHub Actions** untuk build otomatis:
+
+| Workflow | Trigger | Output |
+|----------|---------|--------|
+| **CI Build Validation** (`ci.yml`) | Setiap push & PR | Validasi import Godot + scan broken `res://` refs |
+| **Build & Release** (`release.yml`) | Push tag `v*` | Windows (portable + installer), Linux (.tar.gz + .deb + .rpm), Web (HTML5) |
+
+Release otomatis dipublikasikan ke:
+- **GitHub Releases** — semua artifact build
+- **itch.io** — Windows, Linux, & HTML5 (playable in browser)
+
+### Cara Release
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+# CI akan otomatis build & publish ke GitHub Releases + itch.io
+```

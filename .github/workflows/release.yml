@@ -126,8 +126,49 @@ jobs:
           name: linux-dist
           path: dist/*
 
+  build-web:
+    needs: resolve-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Godot & Export Templates (Web)
+        run: |
+          BASE_URL="https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE_TAG}"
+          curl -sL "${BASE_URL}/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64.zip" -o godot.zip
+          curl -sL "${BASE_URL}/Godot_v${GODOT_RELEASE_TAG}_export_templates.tpz" -o templates.zip
+
+          unzip -q godot.zip -d godot_bin
+          chmod +x godot_bin/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64
+
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${TEMPLATE_DIR_NAME}"
+          mkdir -p "$TEMPLATE_DEST"
+          unzip -q templates.zip -d templates_tmp
+          mv templates_tmp/templates/* "$TEMPLATE_DEST/"
+
+      - name: Import Assets & Export Web Build
+        run: |
+          GODOT_BIN="./godot_bin/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64"
+          mkdir -p builds/web dist
+          $GODOT_BIN --headless --import
+          $GODOT_BIN --headless --export-release "Web" "builds/web/index.html"
+
+      - name: Package Web Build
+        env:
+          VERSION: ${{ needs.resolve-version.outputs.version }}
+        run: |
+          cd builds/web
+          zip -r "../../dist/NoSignalConnect-${VERSION}-Web.zip" .
+
+      - name: Upload Web Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: dist/*
+
   publish-release:
-    needs: [resolve-version, build-windows, build-linux]
+    needs: [resolve-version, build-windows, build-linux, build-web]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
@@ -142,3 +183,40 @@ jobs:
         with:
           generate_release_notes: true
           files: release_assets/*
+
+  publish-itchio:
+    needs: [resolve-version, build-windows, build-linux, build-web]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    env:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+      ITCH_GAME: ${{ vars.ITCH_GAME || 'alijundev/no-signal-connect' }}
+    steps:
+      - name: Download All Built Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_assets
+          merge-multiple: true
+
+      - name: Install itch.io butler
+        run: |
+          curl -sL https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -o butler.zip
+          unzip -q butler.zip -d butler_bin
+          chmod +x butler_bin/butler
+          echo "$PWD/butler_bin" >> "$GITHUB_PATH"
+
+      - name: Push to itch.io
+        if: env.BUTLER_API_KEY != ''
+        env:
+          VERSION: ${{ needs.resolve-version.outputs.version }}
+        run: |
+          # Unzip portables for butler channel push
+          mkdir -p push/windows push/linux push/web
+
+          unzip -q release_assets/NoSignalConnect-${VERSION}-Windows-Portable.zip -d push/windows || true
+          tar -xzf release_assets/no-signal-connect-${VERSION}-linux-portable.tar.gz -C push/linux || true
+          unzip -q release_assets/NoSignalConnect-${VERSION}-Web.zip -d push/web || true
+
+          butler push push/windows "${ITCH_GAME}:windows" --userversion "$VERSION"
+          butler push push/linux  "${ITCH_GAME}:linux"   --userversion "$VERSION"
+          butler push push/web    "${ITCH_GAME}:html5"   --userversion "$VERSION"
