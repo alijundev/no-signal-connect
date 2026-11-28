@@ -16,16 +16,11 @@ var total_stages: int = 2
 
 signal player_health_updated(screen: Screen, current: float, max_val: float)
 signal player_energy_updated(screen: Screen, current: float, max_val: float)
+signal player_buff_updated(screen: Screen, buff_text: String)
 
 
 var active_screen: Screen = Screen.TOP
 var is_signal_active: bool = false
-
-#func _unhandled_input(event: InputEvent) -> void:
-#	if event.is_action_pressed("switch_screen"):
-#		active_screen = Screen.TOP if active_screen == Screen.BOTTOM else Screen.BOTTOM
-#		screen_switched.emit(active_screen)
-#		print(active_screen)
 
 func trigger_game_over() -> void:
 	is_signal_active = false
@@ -34,7 +29,7 @@ func trigger_game_over() -> void:
 	print("Game Over")
 	get_tree().reload_current_scene.call_deferred()
 
-func set_signal_active(active: bool):
+func set_signal_active(active: bool) -> void:
 	is_signal_active = active
 	signal_state_changed.emit(is_signal_active)
 	print("Status Sinyal: ", is_signal_active)

@@ -11,13 +11,43 @@ const RetroTheme = preload("res://scripts/ui/retro_theme.gd")
 @onready var bottom_hp_bar: ProgressBar = $BottomHUD/VBoxContainer/BottomHPBar
 @onready var bottom_energy_bar: ProgressBar = $BottomHUD/VBoxContainer/BottomEnergyBar
 
+var _top_buff_label: Label
+var _bottom_buff_label: Label
+
 func _ready() -> void:
 	_apply_hud_style()
+	_build_buff_labels()
 	GameBridge.player_health_updated.connect(_on_health_updated)
 	GameBridge.player_energy_updated.connect(_on_energy_updated)
+	GameBridge.player_buff_updated.connect(_on_buff_updated)
 	GameBridge.signal_state_changed.connect(_refresh)
 	GameBridge.screen_switched.connect(_refresh)
 	_refresh()
+
+func _build_buff_labels() -> void:
+	var font: Font = RetroTheme.load_font()
+	_top_buff_label = _create_buff_label(font)
+	$TopHUD/VBoxContainer.add_child(_top_buff_label)
+	_bottom_buff_label = _create_buff_label(font)
+	$BottomHUD/VBoxContainer.add_child(_bottom_buff_label)
+
+func _create_buff_label(font: Font) -> Label:
+	var lbl := Label.new()
+	lbl.visible = false
+	if font != null:
+		lbl.add_theme_font_override("font", font)
+	lbl.add_theme_font_size_override("font_size", 9)
+	lbl.add_theme_color_override("font_color", RetroTheme.COL_ACCENT)
+	lbl.add_theme_color_override("font_outline_color", RetroTheme.COL_OUTLINE)
+	lbl.add_theme_constant_override("outline_size", 3)
+	return lbl
+
+func _on_buff_updated(screen: GameBridge.Screen, buff_text: String) -> void:
+	var lbl: Label = _top_buff_label if screen == GameBridge.Screen.TOP else _bottom_buff_label
+	if lbl == null:
+		return
+	lbl.visible = buff_text != ""
+	lbl.text = "BUFF: " + buff_text if buff_text != "" else ""
 
 func _apply_hud_style() -> void:
 	var font: Font = RetroTheme.load_font()

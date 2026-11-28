@@ -30,6 +30,10 @@ var is_sprinting: bool = false
 var is_attacking: bool = false
 var _footsteps: Footsteps
 var _jump_player: AudioStreamPlayer
+var _energy_boost_timer: float = 0.0
+var _shield_timer: float = 0.0
+var _damage_boost_timer: float = 0.0
+var _last_buff_text: String = ""
 
 func _ready() -> void:
 	health_comp.died.connect(GameBridge.trigger_game_over)
@@ -37,6 +41,7 @@ func _ready() -> void:
 	energy_comp.energy_changed.connect(_on_energy_changed)
 	_on_health_changed.call_deferred(health_comp.current_health, health_comp.max_health)
 	_on_energy_changed.call_deferred(energy_comp.current_energy, energy_comp.max_energy)
+	GameBridge.player_buff_updated.emit.call_deferred(assigned_screen, "")
 	play_animation("idle")
 		# Suara langkah: hanya berbunyi saat menapak lantai di layar yang aktif
 	if animated_sprite and step_sound:
@@ -57,6 +62,8 @@ func _on_energy_changed(current: float, max_val: float) -> void:
 	GameBridge.player_energy_updated.emit(assigned_screen, current, max_val)
 
 func _physics_process(delta: float) -> void:
+	_update_buffs(delta)
+
 	# Gravitasi
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -86,14 +93,18 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 
 	var speed: float
-	if direction != 0.0 and wants_sprint and energy_comp.can_sprint():
+	var has_energy_boost: bool = _energy_boost_timer > 0.0
+	if direction != 0.0 and wants_sprint and (has_energy_boost or energy_comp.can_sprint()):
 		speed = sprint_speed
 		is_sprinting = true
-		energy_comp.consume(delta)
+		if has_energy_boost:
+			energy_comp.regenerate(delta * 2.0)
+		else:
+			energy_comp.consume(delta)
 	else:
 		speed = walk_speed
 		is_sprinting = false
-		energy_comp.regenerate(delta)
+		energy_comp.regenerate(delta * (2.0 if has_energy_boost else 1.0))
 
 	if direction != 0.0:
 		velocity.x = direction * speed
@@ -104,6 +115,58 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	process_animation()
 
+
+func has_shield() -> bool:
+	return _shield_timer > 0.0
+
+func has_damage_boost() -> bool:
+	return _damage_boost_timer > 0.0
+
+func apply_buff(buff_type: int, duration: float, heal_amount: float) -> void:
+	match buff_type:
+		0:  # HEAL
+			health_comp.heal(heal_amount)
+		1:  # ENERGY_BOOST
+			_energy_boost_timer = maxf(_energy_boost_timer, duration)
+			energy_comp.current_energy = energy_comp.max_energy
+			energy_comp.is_exhausted = false
+			energy_comp.energy_changed.emit(energy_comp.current_energy, energy_comp.max_energy)
+		2:  # SHIELD
+			_shield_timer = maxf(_shield_timer, duration)
+		3:  # DAMAGE_BOOST
+			_damage_boost_timer = maxf(_damage_boost_timer, duration)
+	_sync_buff_visual_and_hud()
+
+func _update_buffs(delta: float) -> void:
+	if _energy_boost_timer <= 0.0 and _shield_timer <= 0.0 and _damage_boost_timer <= 0.0:
+		return
+	_energy_boost_timer = maxf(_energy_boost_timer - delta, 0.0)
+	_shield_timer = maxf(_shield_timer - delta, 0.0)
+	_damage_boost_timer = maxf(_damage_boost_timer - delta, 0.0)
+	_sync_buff_visual_and_hud()
+
+func _sync_buff_visual_and_hud() -> void:
+	var parts: PackedStringArray = PackedStringArray()
+	if _shield_timer > 0.0:
+		parts.append("SHIELD %ds" % ceili(_shield_timer))
+	if _damage_boost_timer > 0.0:
+		parts.append("ATK x2 %ds" % ceili(_damage_boost_timer))
+	if _energy_boost_timer > 0.0:
+		parts.append("ENERGI %ds" % ceili(_energy_boost_timer))
+
+	var buff_text: String = " | ".join(parts)
+	if buff_text != _last_buff_text:
+		_last_buff_text = buff_text
+		GameBridge.player_buff_updated.emit(assigned_screen, buff_text)
+
+	if _shield_timer > 0.0:
+		modulate = Color(0.65, 0.9, 1.35)
+	elif _damage_boost_timer > 0.0:
+		modulate = Color(1.3, 1.15, 0.55)
+	elif _energy_boost_timer > 0.0:
+		modulate = Color(0.75, 1.25, 1.25)
+	else:
+		modulate = Color.WHITE
 
 func _play_jump_sound() -> void:
 	if _jump_player == null:

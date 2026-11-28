@@ -1,12 +1,16 @@
 class_name Drone
 extends CharacterBody2D
 
+const POWER_UP_SCENE: PackedScene = preload("res://mechanics/power_up/power_up.tscn")
+const PowerUpScript = preload("res://mechanics/power_up/power_up.gd")
+
 @export var move_speed: float = 110.0
 @export var direction: float = 1.0
 @export var patrol_distance: float = 180.0
 @export var hover_amplitude: float = 14.0
 @export var hover_speed: float = 3.0
 @export var face_right_by_default: bool = true
+@export_range(0.0, 1.0, 0.05) var drop_chance: float = 0.7
 
 @onready var health_comp: HealthComponent = $HealthComponent
 @onready var wall_check: RayCast2D = $WallCheck
@@ -15,14 +19,28 @@ extends CharacterBody2D
 var _origin_x: float = 0.0
 var _origin_y: float = 0.0
 var _hover_time: float = 0.0
+var _is_dead: bool = false
 
 func _ready() -> void:
 	_origin_x = global_position.x
 	_origin_y = global_position.y
 	direction = 1.0 if direction >= 0.0 else -1.0
 	wall_check.target_position.x = absf(wall_check.target_position.x) * direction
-	health_comp.died.connect(queue_free)
+	health_comp.died.connect(_on_died)
 	_update_visual()
+
+func _on_died() -> void:
+	if _is_dead:
+		return
+	_is_dead = true
+	if randf() <= drop_chance and get_parent() != null:
+		var item: PowerUpScript = POWER_UP_SCENE.instantiate() as PowerUpScript
+		item.random_type = true
+		item.allow_damage_boost = true
+		item.global_position = global_position
+		get_parent().add_child.call_deferred(item)
+		item.call_deferred("pop_up")
+	queue_free.call_deferred()
 
 func _physics_process(delta: float) -> void:
 	_hover_time += delta

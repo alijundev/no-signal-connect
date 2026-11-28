@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://mechanics/color_memory_puzzle/color_memory_puzzle.tscn" id="4_cmp"]
 [ext_resource type="PackedScene" uid="uid://d1owg7k2p4yaa" path="res://mechanics/one_way_gate/one_way_gate.tscn" id="5_owg"]
 [ext_resource type="Texture2D" uid="uid://be83drqlwxrg6" path="res://assets/Efek/scifi_warp_002/scifi_warp_002_small_red/spritesheet.png" id="6_trap"]
+[ext_resource type="PackedScene" path="res://mechanics/random_chest/random_chest.tscn" id="7_chest"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(1276.5, 51)
@@ -420,6 +421,9 @@ position = Vector2(55, 436)
 texture_filter = 1
 position = Vector2(1170, 381)
 puzzle_scene = ExtResource("4_cmp")
+
+[node name="RandomChest" parent="." unique_id=1523517784 instance=ExtResource("7_chest")]
+position = Vector2(340, 361)
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=1523517778]
 position = Vector2(-16, 360)

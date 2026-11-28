@@ -31,6 +31,9 @@ func _on_attack_succeeded() -> void:
 	var bolt: LightningBoltScript = LIGHTNING_SCENE.instantiate() as LightningBoltScript
 	bolt.global_position = global_position
 	bolt.direction = facing_direction
+	if has_damage_boost():
+		bolt.damage = 50.0
+		bolt.modulate = Color(1.4, 1.25, 0.4)
 	get_parent().add_child(bolt)
 
 	get_tree().create_timer(0.25).timeout.connect(_finish_attack)

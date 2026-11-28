@@ -6,6 +6,9 @@ extends Area2D
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	
-func _on_area_entered(area: Area2D):
+func _on_area_entered(area: Area2D) -> void:
+	var parent_node: Node = get_parent()
+	if parent_node is BasePlayer and (parent_node as BasePlayer).has_shield():
+		return
 	if area is HitboxComponent and health_comp != null:
-		health_comp.take_damage(area.damage)
+		health_comp.take_damage((area as HitboxComponent).damage)
