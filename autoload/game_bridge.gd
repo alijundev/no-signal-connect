@@ -27,12 +27,12 @@ var is_signal_active: bool = false
 #		screen_switched.emit(active_screen)
 #		print(active_screen)
 
-func trigger_game_over():
+func trigger_game_over() -> void:
 	is_signal_active = false
 	current_stage = 0
 	game_over.emit()
 	print("Game Over")
-	get_tree().reload_current_scene()
+	get_tree().reload_current_scene.call_deferred()
 
 func set_signal_active(active: bool):
 	is_signal_active = active

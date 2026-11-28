@@ -69,4 +69,4 @@ func _finish_intro() -> void:
 func _on_play_pressed() -> void:
 	GameBridge.current_stage = 0
 	GameBridge.is_signal_active = false
-	Game.go_to(Game.SCENE_INTRO)
+	Game.go_to(Game.SCENE_GAME if Game.intro_watched else Game.SCENE_INTRO)

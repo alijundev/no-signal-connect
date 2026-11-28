@@ -49,9 +49,11 @@ var _faces: Dictionary = {}
 var _allen_tween: Tween
 var _door_left_x: float = 0.0
 var _door_right_x: float = 0.0
+var _skipping: bool = false
 
 func _ready() -> void:
 	Game._apply_mode(Game.SCENE_INTRO)   # supaya bisa dites langsung dengan F6
+	_add_skip_hint()
 
 	if ResourceLoader.exists(BOX_ALLEN):
 		dialog.allen_box = load(BOX_ALLEN)
@@ -132,7 +134,41 @@ func _run() -> void:
 	await get_tree().create_timer(0.4).timeout
 
 	# 6. Lanjut ke game
-	Game.go_to(Game.SCENE_GAME)
+	if not _skipping:
+		_skipping = true
+		Game.set_intro_watched(true)
+		Game.go_to(Game.SCENE_GAME)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _skipping:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		_skipping = true
+		Game.set_intro_watched(true)
+		Game.play_sfx("select")
+		Game.go_to(Game.SCENE_GAME)
+		get_viewport().set_input_as_handled()
+
+func _add_skip_hint() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 60
+	add_child(layer)
+
+	var label := Label.new()
+	label.text = "[ESC] SKIP"
+	label.anchor_left = 1.0
+	label.anchor_right = 1.0
+	label.offset_left = -150.0
+	label.offset_top = 14.0
+	label.offset_right = -16.0
+	label.offset_bottom = 38.0
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	label.modulate = Color(1.0, 1.0, 1.0, 0.7)
+	var font: Font = Game.RetroTheme.load_font()
+	if font != null:
+		label.add_theme_font_override("font", font)
+		label.add_theme_font_size_override("font_size", 10)
+	layer.add_child(label)
 
 # ------------------------
 # GERAKAN (global_position, selalu searah _dir)

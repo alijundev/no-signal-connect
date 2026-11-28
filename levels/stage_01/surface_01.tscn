@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b2fyy7rlorhk5" path="res://entities/players/allen/allen.tscn" id="1_0o4od"]
 [ext_resource type="Texture2D" uid="uid://bxjpmmwnqq1a7" path="res://assets/Maps/TilesetMaps2.png" id="1_64mkd"]
 [ext_resource type="PackedScene" uid="uid://bk63nen2jorw" path="res://mechanics/signal_tower/signal_tower.tscn" id="2_wgb22"]
+[ext_resource type="Script" uid="uid://e6cpnmi4uwp8" path="res://components/hitbox_component.gd" id="3_hitbox"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(1276.5, 51)
@@ -198,6 +199,12 @@ texture = ExtResource("1_64mkd")
 [sub_resource type="TileSet" id="TileSet_h6fcb"]
 sources/0 = SubResource("TileSetAtlasSource_g5m5q")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fall"]
+size = Vector2(2000, 64)
+
 [node name="Surface01" type="Node2D" unique_id=1703090731]
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=675096795]
@@ -230,3 +237,28 @@ position = Vector2(45, 436)
 [node name="SignalTower" parent="." unique_id=406080753 instance=ExtResource("2_wgb22")]
 texture_filter = 1
 position = Vector2(1181, 381)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1703090732]
+position = Vector2(-16, 360)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=1703090733]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1703090734]
+position = Vector2(1296, 360)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=1703090735]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="FallHazard" type="Area2D" parent="." unique_id=1703090736]
+position = Vector2(640, 820)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("3_hitbox")
+damage = 9999.0
+metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FallHazard" unique_id=1703090737]
+shape = SubResource("RectangleShape2D_fall")

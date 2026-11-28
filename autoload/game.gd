@@ -24,6 +24,7 @@ const RetroTheme = preload("res://scripts/ui/retro_theme.gd")
 var master_volume := 0.8
 var fullscreen := false
 var crt_enabled := true
+var intro_watched := false
 
 var _crt_layer: CanvasLayer
 var _fade_rect: ColorRect
@@ -67,6 +68,11 @@ func set_crt_enabled(value: bool) -> void:
 	save_settings()
 
 
+func set_intro_watched(value: bool) -> void:
+	intro_watched = value
+	save_settings()
+
+
 func apply_settings() -> void:
 	AudioServer.set_bus_volume_db(0, linear_to_db(maxf(master_volume, 0.0001)))
 	AudioServer.set_bus_mute(0, master_volume <= 0.001)
@@ -85,6 +91,7 @@ func save_settings() -> void:
 	cfg.set_value("audio", "master_volume", master_volume)
 	cfg.set_value("video", "fullscreen", fullscreen)
 	cfg.set_value("video", "crt_enabled", crt_enabled)
+	cfg.set_value("progress", "intro_watched", intro_watched)
 	cfg.save(SETTINGS_PATH)
 
 
@@ -95,6 +102,7 @@ func load_settings() -> void:
 	master_volume = clampf(float(cfg.get_value("audio", "master_volume", master_volume)), 0.0, 1.0)
 	fullscreen = bool(cfg.get_value("video", "fullscreen", fullscreen))
 	crt_enabled = bool(cfg.get_value("video", "crt_enabled", crt_enabled))
+	intro_watched = bool(cfg.get_value("progress", "intro_watched", intro_watched))
 
 
 func _unhandled_input(event: InputEvent) -> void:

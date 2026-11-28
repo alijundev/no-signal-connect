@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cub7n5emo2kju" path="res://entities/enemies/broken_robot/broken_robot.tscn" id="3_0xy71"]
 [ext_resource type="PackedScene" uid="uid://b0ceim5d5dhox" path="res://mechanics/stage_exit/stage_exit.tscn" id="4_ov4c0"]
 [ext_resource type="Texture2D" uid="uid://bxjpmmwnqq1a7" path="res://assets/Maps/TilesetMaps2.png" id="5_yhj6h"]
+[ext_resource type="Texture2D" uid="uid://be83drqlwxrg6" path="res://assets/Efek/scifi_warp_002/scifi_warp_002_small_red/spritesheet.png" id="6_trap"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(1262, 21)
@@ -209,6 +210,90 @@ size = Vector2(32, 40)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tv6e2"]
 size = Vector2(40, 40)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_0"]
+atlas = ExtResource("6_trap")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_1"]
+atlas = ExtResource("6_trap")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_2"]
+atlas = ExtResource("6_trap")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_3"]
+atlas = ExtResource("6_trap")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_4"]
+atlas = ExtResource("6_trap")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_5"]
+atlas = ExtResource("6_trap")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_6"]
+atlas = ExtResource("6_trap")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_7"]
+atlas = ExtResource("6_trap")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_8"]
+atlas = ExtResource("6_trap")
+region = Rect2(384, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr_9"]
+atlas = ExtResource("6_trap")
+region = Rect2(432, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_trap"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr_9")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fall"]
+size = Vector2(2000, 64)
+
 [node name="Underground01" type="Node2D" unique_id=1043317867]
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=1901454910]
@@ -225,7 +310,7 @@ offset_left = -640.0
 offset_top = -20.0
 offset_right = 640.0
 offset_bottom = 20.0
-color = Color(1, 0.6862138, 0.61390424, 1)
+color = Color(0.18, 0.2, 0.24, 1)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Floor" unique_id=546434811]
 texture_filter = 1
@@ -247,7 +332,7 @@ offset_left = -7.0
 offset_top = -34.0
 offset_right = 25.0
 offset_bottom = 6.0
-color = Color(1, 0.6862138, 0.61390424, 1)
+color = Color(0.18, 0.2, 0.24, 1)
 
 [node name="Block2" type="StaticBody2D" parent="." unique_id=2093029278]
 position = Vector2(16, 301)
@@ -261,26 +346,24 @@ offset_left = -16.0
 offset_top = -20.0
 offset_right = 16.0
 offset_bottom = 20.0
-color = Color(1, 0.6862138, 0.61390424, 1)
+color = Color(0.18, 0.2, 0.24, 1)
 
-[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1902307384]
+[node name="TrapHazard" type="Area2D" parent="." unique_id=1902307384]
 position = Vector2(728, 394)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("2_0i5ml")
 metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1805460658]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TrapHazard" unique_id=1805460658]
 position = Vector2(10, -17)
 shape = SubResource("RectangleShape2D_tv6e2")
 
-[node name="ColorRect" type="ColorRect" parent="HurtboxComponent" unique_id=2057052163]
-offset_left = -10.0
-offset_top = -37.0
-offset_right = 30.0
-offset_bottom = 3.0
-color = Color(1, 0, 0, 1)
-metadata/_edit_use_anchors_ = true
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TrapHazard" unique_id=2057052163]
+texture_filter = 1
+position = Vector2(10, -17)
+sprite_frames = SubResource("SpriteFrames_trap")
+autoplay = "default"
 
 [node name="BrokenRobot" parent="." unique_id=1996399772 instance=ExtResource("3_0xy71")]
 position = Vector2(584, 372)
@@ -291,3 +374,28 @@ position = Vector2(78, 350)
 
 [node name="StageExit" parent="." unique_id=337521219 instance=ExtResource("4_ov4c0")]
 position = Vector2(1210, 349)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1043317868]
+position = Vector2(-16, 360)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=1043317869]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1043317870]
+position = Vector2(1296, 360)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=1043317871]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="FallHazard" type="Area2D" parent="." unique_id=1043317872]
+position = Vector2(640, 820)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("2_0i5ml")
+damage = 9999.0
+metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FallHazard" unique_id=1043317873]
+shape = SubResource("RectangleShape2D_fall")
