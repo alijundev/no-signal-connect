@@ -13,11 +13,6 @@ contents:
     dst: /usr/bin/no-signal-connect
     file_info:
       mode: 0755
-  - src: ./builds/linux/no-signal-connect.pck
-    dst: /usr/share/no-signal-connect/no-signal-connect.pck
-    file_info:
-      mode: 0644
-    type: config  # optional fallback; ignored if embed_pck=true produces single binary
   - src: ./icon.svg
     dst: /usr/share/icons/hicolor/scalable/apps/no-signal-connect.svg
     file_info:

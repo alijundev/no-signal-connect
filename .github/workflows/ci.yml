@@ -3,7 +3,6 @@ name: CI Build Validation
 on:
   push:
     branches: ["**"]
-    tags-ignore: ["v*"]
   pull_request:
 
 env:
