@@ -19,7 +19,14 @@ var _in_game := false
 
 const SETTINGS_PATH := "user://settings.cfg"
 const SFX_NAMES := ["move", "select", "back", "start"]
-const SFX_VOICES := 4
+const EXTRA_SFX := {
+	"laser_shoot": "res://assets/audio/laser sound.mp3",
+	"laser_hit": "res://assets/audio/laser hit robot.mp3",
+	"tower_on": "res://assets/audio/menara nyala.mp3",
+	"game_over": "res://assets/audio/game_over.mp3",
+	"player_hurt": "res://assets/audio/laser hit robot.mp3",
+}
+const SFX_VOICES := 8
 
 const RetroTheme = preload("res://scripts/ui/retro_theme.gd")
 
@@ -116,24 +123,29 @@ func _unhandled_input(event: InputEvent) -> void:
 # ----------------------------------------------------------------------- SFX
 
 func _build_sfx() -> void:
-	for sfx_name in SFX_NAMES:
-		var path := "res://assets/audio/%s.wav" % sfx_name
+	for sfx_name: String in SFX_NAMES:
+		var path: String = "res://assets/audio/%s.wav" % sfx_name
 		if ResourceLoader.exists(path):
 			_sfx[sfx_name] = load(path)
-	for i in SFX_VOICES:
+	for sfx_key: String in EXTRA_SFX:
+		var path: String = EXTRA_SFX[sfx_key]
+		if ResourceLoader.exists(path):
+			_sfx[sfx_key] = load(path)
+	for i: int in SFX_VOICES:
 		var player := AudioStreamPlayer.new()
 		add_child(player)
 		_players.append(player)
 
 
-func play_sfx(sfx_name: String, pitch := 1.0) -> void:
+func play_sfx(sfx_name: String, pitch: float = 1.0, volume_db: float = 0.0) -> void:
 	var stream: AudioStream = _sfx.get(sfx_name)
 	if stream == null or _players.is_empty():
 		return
-	var player := _players[_next_player]
+	var player: AudioStreamPlayer = _players[_next_player]
 	_next_player = (_next_player + 1) % _players.size()
 	player.stream = stream
 	player.pitch_scale = pitch
+	player.volume_db = volume_db
 	player.play()
 
 # ----------------------------------------------------------------------- Musik

@@ -71,6 +71,7 @@ func _on_game_over() -> void:
 	if pause_menu.visible:
 		pause_menu.close_pause()
 	Game.stop_music(0.5)
+	Game.play_sfx("game_over")
 	get_tree().paused = true
 	game_over_screen.show_screen()
 

@@ -40,8 +40,8 @@ const BOX_LUNA := "res://assets/UI/chatbox girl.png"     # sesuaikan path-nya
 @onready var luna: AnimatedSprite2D = $Luna
 @onready var hole_point: Marker2D = $HolePoint   ## taruh di TEPI lubang yang datang dari arah jalan
 @onready var dialog = $DialogBox
-@onready var trapdoor: Node2D = get_node_or_null("Trapdoor")
-@onready var trap_sfx: AudioStreamPlayer = get_node_or_null("TrapSfx")
+@onready var trapdoor: Node2D = get_node_or_null("Trapdoor") as Node2D
+@onready var trap_sfx: AudioStreamPlayer = get_node_or_null("TrapSfx") as AudioStreamPlayer
 
 
 var _dir: float = 1.0                            ## 1 = kanan, -1 = kiri (dihitung otomatis)
@@ -228,8 +228,10 @@ func _open_trapdoor() -> void:
 	if right:
 		_door_right_x = right.position.x
 
-	if trap_sfx:
+	if trap_sfx != null and trap_sfx.stream != null:
 		trap_sfx.play()
+	else:
+		Game.play_sfx("back", 0.65, -2.0)
 
 	# Getar sebentar
 	var base_y := trapdoor.position.y
@@ -257,8 +259,10 @@ func _close_trapdoor() -> void:
 	var left = trapdoor.get_node_or_null("DoorLeft")
 	var right = trapdoor.get_node_or_null("DoorRight")
 
-	if trap_sfx:
+	if trap_sfx != null and trap_sfx.stream != null:
 		trap_sfx.play()
+	else:
+		Game.play_sfx("back", 0.65, -2.0)
 
 	# Kedua sisi bergeser kembali ke posisi tertutup
 	var close := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)

@@ -61,6 +61,7 @@ func _on_body_exited(body: Node2D) -> void:
 func activate_tower() -> void:
 	is_activated = true
 	prompt_label.visible = false
+	Game.play_sfx("tower_on")
 	var tween: Tween = create_tween()
 	tween.tween_property(sprite, "modulate", Color(0.6, 1.0, 0.6), 0.4)
 	GameBridge.set_signal_active(true)

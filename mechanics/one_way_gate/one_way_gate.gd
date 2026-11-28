@@ -24,6 +24,7 @@ func close_gate() -> void:
 	is_closed = true
 	wall_collision.set_deferred("disabled", false)
 	trigger_collision.set_deferred("disabled", true)
+	Game.play_sfx("back", 0.75)
 	_update_visual()
 	gate_closed.emit()
 

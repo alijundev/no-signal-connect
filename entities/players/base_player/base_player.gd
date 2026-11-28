@@ -19,9 +19,13 @@ extends CharacterBody2D
 @export var double_jump_pitch: float = 1.25          ## nada lompatan kedua (1.0 = sama)
 @export var jump_pitch_variation: float = 0.05
 
+@export_group("Suara terkena damage")
+@export var hurt_sound: AudioStream                  ## opsional; fallback ke SFX bawaan
+@export var hurt_volume_db: float = -2.0
+
 @onready var energy_comp: EnergyComponent = $EnergyComponent
 @onready var health_comp: HealthComponent = $HealthComponent
-@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
+@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 
 var can_move: bool = true
 var jump_count: int = 0
@@ -30,12 +34,15 @@ var is_sprinting: bool = false
 var is_attacking: bool = false
 var _footsteps: Footsteps
 var _jump_player: AudioStreamPlayer
+var _hurt_player: AudioStreamPlayer
+var _last_health: float = -1.0
 var _energy_boost_timer: float = 0.0
 var _shield_timer: float = 0.0
 var _damage_boost_timer: float = 0.0
 var _last_buff_text: String = ""
 
 func _ready() -> void:
+	_last_health = health_comp.current_health
 	health_comp.died.connect(GameBridge.trigger_game_over)
 	health_comp.health_changed.connect(_on_health_changed)
 	energy_comp.energy_changed.connect(_on_energy_changed)
@@ -48,15 +55,35 @@ func _ready() -> void:
 		_footsteps = Footsteps.new()
 		add_child(_footsteps)
 		_footsteps.setup(animated_sprite, step_sound, step_volume_db, step_frames,
-			func(): return is_on_floor() and GameBridge.active_screen == assigned_screen)
+			func() -> bool: return is_on_floor() and GameBridge.active_screen == assigned_screen)
 	if jump_sound:
 		_jump_player = AudioStreamPlayer.new()
 		_jump_player.stream = jump_sound
 		_jump_player.volume_db = jump_volume_db
 		add_child(_jump_player)
+	if hurt_sound:
+		_hurt_player = AudioStreamPlayer.new()
+		_hurt_player.stream = hurt_sound
+		_hurt_player.volume_db = hurt_volume_db
+		add_child(_hurt_player)
 
 func _on_health_changed(current: float, max_val: float) -> void:
+	if _last_health >= 0.0 and current < _last_health and current > 0.0:
+		_play_hurt_feedback()
+	_last_health = current
 	GameBridge.player_health_updated.emit(assigned_screen, current, max_val)
+
+func _play_hurt_feedback() -> void:
+	if _hurt_player != null:
+		_hurt_player.pitch_scale = randf_range(0.92, 1.05)
+		_hurt_player.play()
+	else:
+		Game.play_sfx("player_hurt", randf_range(0.72, 0.84), hurt_volume_db)
+
+	modulate = Color(1.5, 0.45, 0.45)
+	var tw: Tween = create_tween()
+	tw.tween_interval(0.14)
+	tw.tween_callback(_sync_buff_visual_and_hud)
 
 func _on_energy_changed(current: float, max_val: float) -> void:
 	GameBridge.player_energy_updated.emit(assigned_screen, current, max_val)
