@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bk63nen2jorw" path="res://mechanics/signal_tower/signal_tower.tscn" id="2_wgb22"]
 [ext_resource type="Script" uid="uid://e6cpnmi4uwp8" path="res://components/hitbox_component.gd" id="3_hitbox"]
 [ext_resource type="PackedScene" path="res://mechanics/random_chest/random_chest.tscn" id="4_chest"]
+[ext_resource type="Script" path="res://scripts/ui/world_hint.gd" id="5_hint"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(1276.5, 51)
@@ -258,3 +259,23 @@ metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FallHazard" unique_id=1703090737]
 shape = SubResource("RectangleShape2D_fall")
+
+[node name="TutorialControls" type="PanelContainer" parent="."]
+offset_left = 40.0
+offset_top = 240.0
+offset_right = 310.0
+offset_bottom = 310.0
+script = ExtResource("5_hint")
+hint_text = "[A/D] or [LEFT/RIGHT] MOVE
+[SPACE / W] DOUBLE JUMP
+[SHIFT] SPRINT"
+
+[node name="TutorialObjective" type="PanelContainer" parent="."]
+offset_left = 860.0
+offset_top = 240.0
+offset_right = 1150.0
+offset_bottom = 300.0
+script = ExtResource("5_hint")
+hint_text = "[E] OPEN CHEST / TOWER
+CONNECT SIGNAL FOR LUNA!"
+accent_color = Color(0.305882, 0.72549, 0.815686, 1)

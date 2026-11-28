@@ -115,7 +115,8 @@ no-signal-connect/
 
 * **[CONTRIBUTING.md](CONTRIBUTING.md)** — Standar *branching* Git, aturan penamaan file, dan pencegahan konflik `.tscn`.
 * **[docs/TECH_SPEC.md](docs/TECH_SPEC.md)** — Peta sinyal `GameBridge`, tabel *Collision Layer & Mask*, dan cara merakit komponen.
-* **[docs/ASSET_GUIDELINES.md](https://www.google.com/search?q=docs/ASSET_GUIDELINES.md)** — Spesifikasi ukuran piksel, format audio, dan aturan impor aset.
+* **[docs/ASSET_GUIDELINES.md](docs/ASSET_GUIDELINES.md)** — Spesifikasi ukuran piksel, format audio, dan aturan impor aset.
+* **[docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md)** — Panduan lengkap submission & kurasi Gimersia Inspire 2026.
 
 ---
 

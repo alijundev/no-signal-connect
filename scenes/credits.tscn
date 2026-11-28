@@ -33,20 +33,22 @@ text = "CREDITS"
 horizontal_alignment = 1
 
 [node name="Gap" type="Control" parent="Content"]
-custom_minimum_size = Vector2(0, 10)
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Section1" type="Label" parent="Content"]
+[node name="SectionTeam" type="Label" parent="Content"]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
-text = "DESIGN AND CODE"
+text = "TEAM [NAMA TIM] - ID [TEAM ID] - [NAMA INSTITUSI]"
 horizontal_alignment = 1
 
-[node name="Body1" type="Label" parent="Content"]
+[node name="BodyTeam" type="Label" parent="Content"]
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
-text = "YOUR NAME HERE"
+text = "[NAMA ANGGOTA 1] - GAME DESIGN & PROGRAMMING
+[NAMA ANGGOTA 2] - ART & ANIMATION
+[NAMA ANGGOTA 3] - LEVEL DESIGN & AUDIO"
 horizontal_alignment = 1
 
 [node name="Gap2" type="Control" parent="Content"]
@@ -54,18 +56,19 @@ custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Section2" type="Label" parent="Content"]
+[node name="SectionAssets" type="Label" parent="Content"]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
-text = "FONT"
+text = "THIRD-PARTY ASSETS & AUDIO"
 horizontal_alignment = 1
 
-[node name="Body2" type="Label" parent="Content"]
+[node name="BodyAssets" type="Label" parent="Content"]
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
-text = "PRESS START 2P
-THE PRESS START 2P PROJECT AUTHORS
-SIL OPEN FONT LICENSE 1.1"
+text = "VFX SPRITES (LIGHTNING & WARP): [CANTUMKAN SUMBER / LISENSI]
+TILESET & CHARACTER SPRITES: [BUATAN TIM / CANTUMKAN SUMBER]
+BGM & GAMEPLAY SFX: [CANTUMKAN SUMBER / LISENSI]
+MEME CHEST SFX (CIHUY / CAT LAUGH): MYINSTANTS [PASTIKAN LISENSI]"
 horizontal_alignment = 1
 
 [node name="Gap3" type="Control" parent="Content"]
@@ -73,20 +76,22 @@ custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Section3" type="Label" parent="Content"]
+[node name="SectionFont" type="Label" parent="Content"]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
-text = "ENGINE"
+text = "FONT & ENGINE"
 horizontal_alignment = 1
 
-[node name="Body3" type="Label" parent="Content"]
+[node name="BodyFont" type="Label" parent="Content"]
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
-text = "GODOT ENGINE"
+text = "PRESS START 2P - THE PRESS START 2P PROJECT AUTHORS (SIL OFL 1.1)
+GODOT ENGINE 4.7 - MIT LICENSE
+GIMERSIA INSPIRE 2026"
 horizontal_alignment = 1
 
 [node name="Gap4" type="Control" parent="Content"]
-custom_minimum_size = Vector2(0, 14)
+custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 mouse_filter = 2
 

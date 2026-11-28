@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b0ceim5d5dhox" path="res://mechanics/stage_exit/stage_exit.tscn" id="4_ov4c0"]
 [ext_resource type="Texture2D" uid="uid://bxjpmmwnqq1a7" path="res://assets/Maps/TilesetMaps2.png" id="5_yhj6h"]
 [ext_resource type="Texture2D" uid="uid://be83drqlwxrg6" path="res://assets/Efek/scifi_warp_002/scifi_warp_002_small_red/spritesheet.png" id="6_trap"]
+[ext_resource type="Script" path="res://scripts/ui/world_hint.gd" id="7_hint"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(1262, 21)
@@ -391,3 +392,23 @@ metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FallHazard" unique_id=1043317873]
 shape = SubResource("RectangleShape2D_fall")
+
+[node name="TutorialCombat" type="PanelContainer" parent="."]
+offset_left = 40.0
+offset_top = 185.0
+offset_right = 340.0
+offset_bottom = 255.0
+script = ExtResource("7_hint")
+hint_text = "SIGNAL ACTIVE!
+[E] OPEN LAPTOP -> TYPE COMMAND
+[ENTER] SHOOT LIGHTNING!"
+accent_color = Color(0.305882, 0.72549, 0.815686, 1)
+
+[node name="TutorialExit" type="PanelContainer" parent="."]
+offset_left = 930.0
+offset_top = 185.0
+offset_right = 1230.0
+offset_bottom = 245.0
+script = ExtResource("7_hint")
+hint_text = "DODGE TRAPS & ENEMIES!
+REACH THE EXIT GATE ->"
