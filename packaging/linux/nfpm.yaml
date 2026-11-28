@@ -1,0 +1,23 @@
+name: "no-signal-connect"
+arch: "amd64"
+platform: "linux"
+version: "${VERSION}"
+section: "games"
+priority: "optional"
+maintainer: "No Signal Team"
+description: "2D pixel art split-screen puzzle-platformer"
+license: "MIT"
+
+contents:
+  - src: ./builds/linux/no-signal-connect.x86_64
+    dst: /usr/bin/no-signal-connect
+    file_info:
+      mode: 0755
+  - src: ./icon.svg
+    dst: /usr/share/icons/hicolor/scalable/apps/no-signal-connect.svg
+    file_info:
+      mode: 0644
+  - src: ./packaging/linux/no-signal-connect.desktop
+    dst: /usr/share/applications/no-signal-connect.desktop
+    file_info:
+      mode: 0644

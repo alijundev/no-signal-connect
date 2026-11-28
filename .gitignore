@@ -2,8 +2,10 @@
 .godot/
 
 # Folder hasil export build game (Windows/Linux)
+export_credentials.cfg
 builds/
 export/
+dist/
 
 # Crash logs & temporary files
 *.log

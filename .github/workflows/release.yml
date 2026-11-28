@@ -1,0 +1,144 @@
+name: Build & Release Production
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GODOT_VERSION: "4.7"
+  GODOT_RELEASE_TAG: "4.7-stable"
+  TEMPLATE_DIR_NAME: "4.7.stable"
+
+jobs:
+  resolve-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_ver.outputs.version }}
+    steps:
+      - name: Extract Semantic Version
+        id: get_ver
+        run: |
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            VER="${GITHUB_REF_NAME#v}"
+          else
+            VER="0.1.0-dev.${{ github.run_number }}"
+          fi
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+
+  build-windows:
+    needs: resolve-version
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Godot & Export Templates (Windows)
+        shell: pwsh
+        run: |
+          $baseUrl = "https://github.com/godotengine/godot/releases/download/$env:GODOT_RELEASE_TAG"
+          Invoke-WebRequest -Uri "$baseUrl/Godot_v$env:GODOT_RELEASE_TAG`_win64.exe.zip" -OutFile "godot.zip"
+          Invoke-WebRequest -Uri "$baseUrl/Godot_v$env:GODOT_RELEASE_TAG`_export_templates.tpz" -OutFile "templates.zip"
+
+          Expand-Archive -Path "godot.zip" -DestinationPath "godot_bin" -Force
+          $templateDest = "$env:APPDATA\Godot\export_templates\$env:TEMPLATE_DIR_NAME"
+          New-Item -ItemType Directory -Force -Path $templateDest | Out-Null
+          Expand-Archive -Path "templates.zip" -DestinationPath "templates_tmp" -Force
+          Move-Item -Path "templates_tmp\templates\*" -Destination $templateDest -Force
+
+      - name: Import Assets & Export Windows Binary
+        shell: pwsh
+        run: |
+          $godotExe = (Get-ChildItem -Path "godot_bin" -Filter "*console.exe" | Select-Object -First 1).FullName
+          if (-not $godotExe) {
+            $godotExe = (Get-ChildItem -Path "godot_bin" -Filter "*.exe" | Select-Object -First 1).FullName
+          }
+
+          New-Item -ItemType Directory -Force -Path "builds\windows", "dist" | Out-Null
+          & $godotExe --headless --import
+          & $godotExe --headless --export-release "Windows Desktop" "builds\windows\NoSignalConnect.exe"
+
+      - name: Build Windows Installer (.exe) & Portable (.zip)
+        shell: pwsh
+        run: |
+          $ver = "${{ needs.resolve-version.outputs.version }}"
+          Compress-Archive -Path "builds\windows\*" -DestinationPath "dist\NoSignalConnect-$ver-Windows-Portable.zip" -Force
+
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup -y
+          }
+          & $iscc "/DMyAppVersion=$ver" "packaging\windows\installer.iss"
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-dist
+          path: dist/*
+
+  build-linux:
+    needs: resolve-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Godot & Export Templates (Linux)
+        run: |
+          BASE_URL="https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE_TAG}"
+          curl -sL "${BASE_URL}/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64.zip" -o godot.zip
+          curl -sL "${BASE_URL}/Godot_v${GODOT_RELEASE_TAG}_export_templates.tpz" -o templates.zip
+
+          unzip -q godot.zip -d godot_bin
+          chmod +x godot_bin/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64
+
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${TEMPLATE_DIR_NAME}"
+          mkdir -p "$TEMPLATE_DEST"
+          unzip -q templates.zip -d templates_tmp
+          mv templates_tmp/templates/* "$TEMPLATE_DEST/"
+
+      - name: Import Assets & Export Linux Binary
+        run: |
+          GODOT_BIN="./godot_bin/Godot_v${GODOT_RELEASE_TAG}_linux.x86_64"
+          mkdir -p builds/linux dist
+          $GODOT_BIN --headless --import
+          $GODOT_BIN --headless --export-release "Linux" "builds/linux/no-signal-connect.x86_64"
+          chmod +x builds/linux/no-signal-connect.x86_64
+
+      - name: Build Linux Packages (.deb, .rpm) & Portable (.tar.gz)
+        env:
+          VERSION: ${{ needs.resolve-version.outputs.version }}
+        run: |
+          tar -czf "dist/no-signal-connect-${VERSION}-linux-portable.tar.gz" -C builds/linux .
+
+          go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+          NFPM_BIN="$(go env GOPATH)/bin/nfpm"
+          $NFPM_BIN package --config packaging/linux/nfpm.yaml --packager deb --target dist/
+          $NFPM_BIN package --config packaging/linux/nfpm.yaml --packager rpm --target dist/
+
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-dist
+          path: dist/*
+
+  publish-release:
+    needs: [resolve-version, build-windows, build-linux]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download All Built Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_assets
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release_assets/*

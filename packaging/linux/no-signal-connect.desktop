@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=No Signal, Connect!
+Comment=2D Split-Screen Puzzle Platformer
+Exec=/usr/bin/no-signal-connect
+Icon=no-signal-connect
+Terminal=false
+Type=Application
+Categories=Game;AdventureGame;
