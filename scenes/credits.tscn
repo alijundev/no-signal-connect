@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://i3mtexs222y8"]
 
-[ext_resource type="Script" path="res://scripts/screens/credits.gd" id="1_cr"]
+[ext_resource type="Script" uid="uid://dcimyscai5r5t" path="res://scripts/screens/credits.gd" id="1_cr"]
 [ext_resource type="PackedScene" path="res://scenes/components/background.tscn" id="2_bg"]
-[ext_resource type="Script" path="res://scripts/ui/retro_menu.gd" id="3_menu"]
-[ext_resource type="Script" path="res://scripts/ui/retro_button.gd" id="4_btn"]
+[ext_resource type="Script" uid="uid://cbhwudwagpeym" path="res://scripts/ui/retro_menu.gd" id="3_menu"]
+[ext_resource type="Script" uid="uid://bqspgtnijlaq" path="res://scripts/ui/retro_button.gd" id="4_btn"]
 
-[node name="Credits" type="Control"]
+[node name="Credits" type="Control" unique_id=776194959]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,9 +14,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cr")
 
-[node name="Background" parent="." instance=ExtResource("2_bg")]
+[node name="Background" parent="." unique_id=58019998 instance=ExtResource("2_bg")]
+layout_mode = 0
+anchors_preset = 0
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=966463043]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,24 +28,24 @@ grow_vertical = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="Header" type="Label" parent="Content"]
+[node name="Header" type="Label" parent="Content" unique_id=239179074]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "CREDITS"
 horizontal_alignment = 1
 
-[node name="Gap" type="Control" parent="Content"]
+[node name="Gap" type="Control" parent="Content" unique_id=1582935399]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SectionTeam" type="Label" parent="Content"]
+[node name="SectionTeam" type="Label" parent="Content" unique_id=763223251]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
-text = "TEAM [NAMA TIM] - ID [TEAM ID] - [NAMA INSTITUSI]"
+text = "TEAM KASIH SARAN NAMA TIM, NYELENEH BOLE - ID 222 - UNIVERSITAS HALU OLEO"
 horizontal_alignment = 1
 
-[node name="BodyTeam" type="Label" parent="Content"]
+[node name="BodyTeam" type="Label" parent="Content" unique_id=403165416]
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "[NAMA ANGGOTA 1] - GAME DESIGN & PROGRAMMING
@@ -51,18 +53,18 @@ text = "[NAMA ANGGOTA 1] - GAME DESIGN & PROGRAMMING
 [NAMA ANGGOTA 3] - LEVEL DESIGN & AUDIO"
 horizontal_alignment = 1
 
-[node name="Gap2" type="Control" parent="Content"]
+[node name="Gap2" type="Control" parent="Content" unique_id=968151383]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SectionAssets" type="Label" parent="Content"]
+[node name="SectionAssets" type="Label" parent="Content" unique_id=2123934606]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
 text = "THIRD-PARTY ASSETS & AUDIO"
 horizontal_alignment = 1
 
-[node name="BodyAssets" type="Label" parent="Content"]
+[node name="BodyAssets" type="Label" parent="Content" unique_id=516313264]
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "VFX SPRITES (LIGHTNING & WARP): [CANTUMKAN SUMBER / LISENSI]
@@ -71,18 +73,18 @@ BGM & GAMEPLAY SFX: [CANTUMKAN SUMBER / LISENSI]
 MEME CHEST SFX (CIHUY / CAT LAUGH): MYINSTANTS [PASTIKAN LISENSI]"
 horizontal_alignment = 1
 
-[node name="Gap3" type="Control" parent="Content"]
+[node name="Gap3" type="Control" parent="Content" unique_id=1884588752]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SectionFont" type="Label" parent="Content"]
+[node name="SectionFont" type="Label" parent="Content" unique_id=666767311]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
 text = "FONT & ENGINE"
 horizontal_alignment = 1
 
-[node name="BodyFont" type="Label" parent="Content"]
+[node name="BodyFont" type="Label" parent="Content" unique_id=1249940926]
 layout_mode = 2
 theme_type_variation = &"BodyLabel"
 text = "PRESS START 2P - THE PRESS START 2P PROJECT AUTHORS (SIL OFL 1.1)
@@ -90,17 +92,17 @@ GODOT ENGINE 4.7 - MIT LICENSE
 GIMERSIA INSPIRE 2026"
 horizontal_alignment = 1
 
-[node name="Gap4" type="Control" parent="Content"]
+[node name="Gap4" type="Control" parent="Content" unique_id=554112455]
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Menu" type="VBoxContainer" parent="Content"]
+[node name="Menu" type="VBoxContainer" parent="Content" unique_id=338024857]
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("3_menu")
 
-[node name="BackButton" type="Button" parent="Content/Menu"]
+[node name="BackButton" type="Button" parent="Content/Menu" unique_id=1584475620]
 custom_minimum_size = Vector2(192, 24)
 layout_mode = 2
 text = "BACK"
