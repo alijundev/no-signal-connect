@@ -17,19 +17,24 @@ func _ready() -> void:
 func can_sprint() -> bool:
 	return not is_exhausted and current_energy > 0.0
 
-func consume(delta: float):
+func consume(delta: float) -> void:
+	var prev_energy: float = current_energy
+	var prev_exhausted: bool = is_exhausted
 	current_energy = clampf(current_energy - (drain_rate * delta), 0.0, max_energy)
-	
+
 	if current_energy <= 0.0:
 		is_exhausted = true
-	
-	energy_changed.emit(current_energy, max_energy)
-	 
-	
-func regenerate(delta: float):
+
+	if not is_equal_approx(prev_energy, current_energy) or prev_exhausted != is_exhausted:
+		energy_changed.emit(current_energy, max_energy)
+
+func regenerate(delta: float) -> void:
+	var prev_energy: float = current_energy
+	var prev_exhausted: bool = is_exhausted
 	current_energy = clampf(current_energy + (regen_rate * delta), 0.0, max_energy)
-	
+
 	if is_exhausted and current_energy >= recovery_threshold:
 		is_exhausted = false
-	
-	energy_changed.emit(current_energy, max_energy)
+
+	if not is_equal_approx(prev_energy, current_energy) or prev_exhausted != is_exhausted:
+		energy_changed.emit(current_energy, max_energy)

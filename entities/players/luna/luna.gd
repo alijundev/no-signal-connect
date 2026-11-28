@@ -33,6 +33,7 @@ func _on_attack_succeeded() -> void:
 	bolt.direction = facing_direction
 	if has_damage_boost():
 		bolt.damage = 50.0
+		bolt.is_boosted = true
 		bolt.modulate = Color(1.4, 1.25, 0.4)
 	get_parent().add_child(bolt)
 

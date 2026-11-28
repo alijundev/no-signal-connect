@@ -43,7 +43,7 @@ var _last_buff_text: String = ""
 
 func _ready() -> void:
 	_last_health = health_comp.current_health
-	health_comp.died.connect(GameBridge.trigger_game_over)
+	health_comp.died.connect(_on_died)
 	health_comp.health_changed.connect(_on_health_changed)
 	energy_comp.energy_changed.connect(_on_energy_changed)
 	_on_health_changed.call_deferred(health_comp.current_health, health_comp.max_health)
@@ -66,6 +66,13 @@ func _ready() -> void:
 		_hurt_player.stream = hurt_sound
 		_hurt_player.volume_db = hurt_volume_db
 		add_child(_hurt_player)
+
+func _on_died() -> void:
+	can_move = false
+	if animated_sprite != null and animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"ko"):
+		animated_sprite.flip_h = facing < 0
+		animated_sprite.play(&"ko")
+	GameBridge.trigger_game_over.call_deferred()
 
 func _on_health_changed(current: float, max_val: float) -> void:
 	if _last_health >= 0.0 and current < _last_health and current > 0.0:

@@ -75,28 +75,33 @@ no-signal-connect/
 │   └── TECH_SPEC.md
 ├── entities/
 │   ├── enemies/
-│   │   ├── broken_robot/       # Musuh patroli darat Stage 1
-│   │   └── drone/              # Musuh Stage 2
+│   │   ├── broken_robot/       # Musuh patroli darat Stage 1 & Stage 2 (broken_robot_v2)
+│   │   └── drone/              # Musuh patroli udara Stage 2
 │   └── players/
 │       ├── allen/              # Karakter A (Permukaan)
-│       ├── base_player/        # Base scene & fisika dasar (gerak, double jump, sprint)
+│       ├── base_player/        # Base scene & fisika dasar (gerak, double jump, sprint, buff)
 │       └── luna/               # Karakter B (Underground + terminal combat)
 ├── levels/
 │   ├── stage_01/               # surface_01.tscn & underground_01.tscn
 │   └── stage_02/               # surface_02.tscn & underground_02.tscn
 ├── mechanics/
 │   ├── cable_puzzle/           # Mini-puzzle urutan kabel Allen (Stage 1)
+│   ├── color_memory_puzzle/    # Mini-puzzle Color Memory Allen (Stage 2)
 │   ├── laptop_terminal/        # UI ketik command serangan Luna
 │   ├── lightning_bolt/         # Proyektil serangan petir Luna
+│   ├── one_way_gate/           # Gerbang satu arah (anti-backtracking)
+│   ├── power_up/               # Item buff berdurasi (Heal, Energy, Shield, ATK x2)
+│   ├── random_chest/           # Peti buff acak untuk Allen
 │   ├── signal_tower/           # Menara pemancar sinyal utama
 │   └── stage_exit/             # Titik finis underground tiap stage
 ├── packaging/                  # Konfigurasi installer Linux & Windows
-├── scenes/                     # Scene layar menu, intro cutscene, settings, credits, feedback
-├── scripts/                    # Skrip untuk intro, screens, & komponen UI retro
+├── scenes/                     # Scene menu, intro/outro cutscene, win_screen, settings, credits, feedback
+├── scripts/                    # Skrip untuk intro, outro, screens, & komponen UI retro
 ├── shaders/                    # Shader CRT, pixel transition, & starfield
 ├── ui/
 │   ├── dialog/                 # Sistem kotak dialog (DialogBox)
-│   └── hud_dual_screen.tscn    # HUD bar HP, bar energi, & status sinyal
+│   ├── screens/                # Overlay PauseMenu & GameOverScreen
+│   └── hud_dual_screen.tscn    # HUD bar HP, bar energi, buff, stage, & status sinyal
 ├── main.gd                     # Controller pergantian layar & level lintas SubViewport
 ├── main.tscn                   # Root scene gameplay (TopViewport & BottomViewport)
 ├── project.godot               # Konfigurasi InputMap, Physics Layers, & Autoload
@@ -116,11 +121,12 @@ no-signal-connect/
 
 ## Roadmap Pengembangan
 
-* [x] Arsitektur *dual-viewport* bergantian layar penuh (`main.gd`) & cutscene intro
+* [x] Arsitektur *dual-viewport* bergantian layar penuh (`main.gd`), backdrop dunia, & cutscene Intro/Outro
 * [x] Sistem pergerakan dasar (*double jump*, *sprint* berbasis energi) & *Health/Damage*
-* [x] *Core gameplay loop* Stage 1 (Puzzle kabel, Menara Sinyal, *Typing Combat* petir, & Robot Rusak) — *perlu penyempurnaan & bugfix*
+* [x] *Core gameplay loop* Stage 1 (Puzzle kabel, Menara Sinyal, *Typing Combat* petir, & Robot Rusak)
 * [x] HUD status lintas layar & sistem transisi antar-stage
-* [ ] Implementasi Stage 2, Puzzle *Color Memory*, & musuh *Drone*
-* [ ] Sistem item *Buff / Power-Up* acak berdurasi & *One-Way Gate*
-* [ ] Layar *Main Menu* (selesai), *Game Over*, *Win Screen*, serta *Pause Menu*
-* [ ] Integrasi penuh aset *2D pixel art* & SFX gameplay, serta *export build* Windows & Linux
+* [x] Implementasi Stage 2, Puzzle *Color Memory*, & musuh *Drone*
+* [x] Sistem item *Buff / Power-Up* acak berdurasi (`RandomChest` & drop musuh) & *One-Way Gate*
+* [x] Layar *Main Menu*, *Pause Menu*, *Game Over*, & *Win Screen*
+* [x] Integrasi aset *2D pixel art*, SFX gameplay & dialog, serta konsistensi desain UI
+* [ ] *Final Playtest* & *export build* Windows & Linux v1.0
