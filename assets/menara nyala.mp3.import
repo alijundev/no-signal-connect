@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dxj8oytoemxak"
+path="res://.godot/imported/menara nyala.mp3-ccffe0cfec8a70f7fde2d426149d96c7.mp3str"
+
+[deps]
+
+source_file="res://assets/menara nyala.mp3"
+dest_files=["res://.godot/imported/menara nyala.mp3-ccffe0cfec8a70f7fde2d426149d96c7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

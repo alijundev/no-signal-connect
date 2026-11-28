@@ -5,6 +5,7 @@ extends Node
 signal settings_changed
 
 const SCENE_MAIN_MENU := "res://scenes/main_menu.tscn"
+const MUSIC_MENU := "res://assets/audio/main menu.mp3"   # sesuaikan nama file
 const SCENE_GAME := "res://main.tscn"
 const SCENE_INTRO := "res://scenes/intro.tscn"
 const SCENE_SETTINGS := "res://scenes/settings.tscn"
@@ -29,6 +30,8 @@ var _fade_rect: ColorRect
 var _fade_material: ShaderMaterial
 var _busy := false
 var _sfx := {}
+var _music: AudioStreamPlayer
+var _music_tween: Tween
 var _players: Array[AudioStreamPlayer] = []
 var _next_player := 0
 
@@ -37,6 +40,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	load_settings()
 	_build_sfx()
+	_build_music()
 	_build_crt()
 	_build_transition()
 	apply_settings()
@@ -122,7 +126,48 @@ func play_sfx(sfx_name: String, pitch := 1.0) -> void:
 	player.pitch_scale = pitch
 	player.play()
 
+# ----------------------------------------------------------------------- Musik
 
+func _build_music() -> void:
+	_music = AudioStreamPlayer.new()
+	add_child(_music)
+
+
+func play_music(path: String, volume_db := -1.0, fade := 1.0) -> void:
+	if not ResourceLoader.exists(path):
+		push_warning("Musik tidak ditemukan: " + path)
+		return
+	var stream := load(path) as AudioStream
+	if stream == null:
+		return
+	# Lagu yang sama sudah diputar: biarkan lanjut
+	if _music.playing and _music.stream == stream:
+		return
+	if "loop" in stream:
+		stream.loop = true   # MP3 / OGG diulang terus
+
+	if _music_tween:
+		_music_tween.kill()
+	_music_tween = create_tween()
+	# Lagu lama dipudarkan dulu
+	if _music.playing:
+		_music_tween.tween_property(_music, "volume_db", -80.0, minf(fade, 0.5))
+	# Lalu lagu baru masuk dengan fade-in
+	_music_tween.tween_callback(func():
+		_music.stream = stream
+		_music.volume_db = -80.0
+		_music.play())
+	_music_tween.tween_property(_music, "volume_db", volume_db, fade)
+
+func stop_music(fade := 0.8) -> void:
+	if _music == null or not _music.playing:
+		return
+	if _music_tween:
+		_music_tween.kill()
+	_music_tween = create_tween()
+	_music_tween.tween_property(_music, "volume_db", -80.0, fade)
+	_music_tween.tween_callback(_music.stop)
+	
 # --------------------------------------------------------------- CRT overlay
 
 func _build_crt() -> void:
@@ -176,6 +221,8 @@ func go_to(path: String) -> void:
 	if _busy:
 		return
 	_busy = true
+	if path == SCENE_INTRO or path == SCENE_GAME:
+		stop_music(0.6)
 	_fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP # blokir klik saat transisi
 	await _run_fade(0.0, 1.0, 0.35)
 	_apply_mode(path)

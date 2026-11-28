@@ -1,5 +1,7 @@
 extends Control
 ## Menu utama. Urutan intro: judul "diketik" -> subtitle -> tombol muncul satu-satu.
+const BUTTON_SIZE := Vector2(150, 30)   # lebar x tinggi tombol (font tetap 16)
+const BUTTON_SPACING := 8              # jarak antar tombol
 
 @onready var title: PixelTitle = $Content/Title
 @onready var subtitle: Label = $Content/Subtitle
@@ -14,7 +16,11 @@ var _buttons: Array[RetroButton] = []
 
 
 func _ready() -> void:
+	Game.play_music(Game.MUSIC_MENU)
 	_buttons = [play_button, settings_button, feedback_button, credits_button, exit_button]
+	for b in _buttons:
+		b.custom_minimum_size = BUTTON_SIZE
+	$Content/Menu.add_theme_constant_override("separation", BUTTON_SPACING)
 	version_label.text = "V%s" % ProjectSettings.get_setting("application/config/version", "0.1.0")
 
 	play_button.pressed.connect(_on_play_pressed)

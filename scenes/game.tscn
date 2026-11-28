@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://b1hpmigebsvci"]
 
-[ext_resource type="Script" path="res://scripts/screens/game_scene.gd" id="1_game"]
+[ext_resource type="Script" uid="uid://dsp82audsyyr5" path="res://scripts/screens/game_scene.gd" id="1_game"]
 [ext_resource type="PackedScene" path="res://scenes/components/background.tscn" id="2_bg"]
 
-[node name="GameScene" type="Control"]
+[node name="GameScene" type="Control" unique_id=22684835]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,9 +12,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_game")
 
-[node name="Background" parent="." instance=ExtResource("2_bg")]
+[node name="Background" parent="." unique_id=841840244 instance=ExtResource("2_bg")]
+layout_mode = 0
+anchors_preset = 0
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=1075163105]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,13 +26,13 @@ grow_vertical = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Header" type="Label" parent="Content"]
+[node name="Header" type="Label" parent="Content" unique_id=2089596409]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "GAME SCENE"
 horizontal_alignment = 1
 
-[node name="Hint" type="Label" parent="Content"]
+[node name="Hint" type="Label" parent="Content" unique_id=1889031866]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 text = "PUT YOUR GAME HERE   ESC: BACK TO MENU"

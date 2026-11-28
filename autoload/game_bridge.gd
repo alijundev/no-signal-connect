@@ -9,6 +9,7 @@ signal screen_switched(new_screen: Screen)
 signal game_over
 signal signal_state_changed(is_active: bool)
 signal stage_changed(stage_index: int)
+signal game_won
 
 var current_stage: int = 0
 var total_stages: int = 2
@@ -46,3 +47,4 @@ func completed_stage() -> void:
 	else:
 		print("SELAMAT! ALLEN & LUNA PULANG BERSAMA (WIN)!")
 		current_stage = 0
+		game_won.emit()      # <-- BARU
