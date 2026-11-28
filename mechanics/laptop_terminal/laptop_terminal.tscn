@@ -1,38 +1,57 @@
 [gd_scene format=3 uid="uid://dps2e2s2kgdeb"]
 
 [ext_resource type="Script" uid="uid://cea1u8l7yhx5v" path="res://mechanics/laptop_terminal/laptop_terminal.gd" id="1_nims6"]
+[ext_resource type="Texture2D" uid="uid://dj381qvbao1c8" path="res://assets/UI/laptop_screen.png" id="2_laptop"]
 
 [node name="LaptopTerminal" type="CanvasLayer" unique_id=1518743068]
 visible = false
 script = ExtResource("1_nims6")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1515633163]
+[node name="LaptopFrame" type="TextureRect" parent="." unique_id=1515633163]
+texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -34.5
-offset_top = -42.5
-offset_right = 34.5
-offset_bottom = 42.5
+offset_left = -285.0
+offset_top = -192.0
+offset_right = 285.0
+offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_laptop")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1156331870]
-layout_mode = 2
+[node name="ScreenMargin" type="MarginContainer" parent="LaptopFrame" unique_id=1156331871]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 114
+theme_override_constants/margin_top = 136
+theme_override_constants/margin_right = 114
+theme_override_constants/margin_bottom = 66
 
-[node name="TitleLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=786877304]
+[node name="VBoxContainer" type="VBoxContainer" parent="LaptopFrame/ScreenMargin" unique_id=1156331870]
 layout_mode = 2
-text = "[ TERMINAL AKTIF - KETIK COMMAND ] "
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="LaptopFrame/ScreenMargin/VBoxContainer" unique_id=786877304]
+layout_mode = 2
+text = "[ TERMINAL AKTIF ]"
 horizontal_alignment = 1
 
-[node name="CommandLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=655743001]
+[node name="CommandLabel" type="Label" parent="LaptopFrame/ScreenMargin/VBoxContainer" unique_id=655743001]
 layout_mode = 2
 text = "sudo zap"
 horizontal_alignment = 1
 
-[node name="CommandInput" type="LineEdit" parent="PanelContainer/VBoxContainer" unique_id=752723225]
+[node name="CommandInput" type="LineEdit" parent="LaptopFrame/ScreenMargin/VBoxContainer" unique_id=752723225]
 layout_mode = 2
 placeholder_text = "Ketik lalu Enter"
 alignment = 1
