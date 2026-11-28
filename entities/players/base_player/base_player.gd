@@ -50,10 +50,10 @@ func _ready() -> void:
 		_jump_player.volume_db = jump_volume_db
 		add_child(_jump_player)
 
-func _on_health_changed(current: float, max_val: float):
+func _on_health_changed(current: float, max_val: float) -> void:
 	GameBridge.player_health_updated.emit(assigned_screen, current, max_val)
 
-func _on_energy_changed(current: float, max_val: float):
+func _on_energy_changed(current: float, max_val: float) -> void:
 	GameBridge.player_energy_updated.emit(assigned_screen, current, max_val)
 
 func _physics_process(delta: float) -> void:
@@ -65,14 +65,7 @@ func _physics_process(delta: float) -> void:
 			jump_count = 1
 	else:
 		jump_count = 0
-		
-		if Input.is_action_just_pressed("jump") and jump_count < max_jump:
-			velocity.y = jump_velocity
-			jump_count += 1
-			play_animation("jump", true)  # langsung putar, tanpa delay
-			_play_jump_sound()
-		
-	
+
 	# Berhenti kalau bukan layar ini atau tidak boleh bergerak
 	if GameBridge.active_screen != assigned_screen or not can_move:
 		velocity.x = 0.0
@@ -86,6 +79,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = jump_velocity
 		jump_count += 1
 		play_animation("jump", true)  # langsung putar, tanpa delay
+		_play_jump_sound()
 
 	# Gerak kiri-kanan
 	var wants_sprint := Input.is_action_pressed("sprint")
