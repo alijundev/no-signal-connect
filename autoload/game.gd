@@ -34,6 +34,7 @@ var master_volume := 0.8
 var fullscreen := false
 var crt_enabled := true
 var intro_watched := false
+var completed_tutorials: Array[String] = []
 
 var _crt_layer: CanvasLayer
 var _fade_rect: ColorRect
@@ -101,6 +102,7 @@ func save_settings() -> void:
 	cfg.set_value("video", "fullscreen", fullscreen)
 	cfg.set_value("video", "crt_enabled", crt_enabled)
 	cfg.set_value("progress", "intro_watched", intro_watched)
+	cfg.set_value("progress", "completed_tutorials", completed_tutorials)
 	cfg.save(SETTINGS_PATH)
 
 
@@ -112,6 +114,22 @@ func load_settings() -> void:
 	fullscreen = bool(cfg.get_value("video", "fullscreen", fullscreen))
 	crt_enabled = bool(cfg.get_value("video", "crt_enabled", crt_enabled))
 	intro_watched = bool(cfg.get_value("progress", "intro_watched", intro_watched))
+	var saved_tutorials: Variant = cfg.get_value("progress", "completed_tutorials", [])
+	completed_tutorials.clear()
+	if saved_tutorials is Array:
+		for item: Variant in saved_tutorials:
+			completed_tutorials.append(str(item))
+
+
+func is_tutorial_done(tutorial_id: String) -> bool:
+	return completed_tutorials.has(tutorial_id)
+
+
+func mark_tutorial_done(tutorial_id: String) -> void:
+	if tutorial_id.is_empty() or completed_tutorials.has(tutorial_id):
+		return
+	completed_tutorials.append(tutorial_id)
+	save_settings()
 
 
 func _unhandled_input(event: InputEvent) -> void:

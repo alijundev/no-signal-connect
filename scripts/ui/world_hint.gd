@@ -9,6 +9,7 @@ const RetroTheme = preload("res://scripts/ui/retro_theme.gd")
 @export var accent_color: Color = RetroTheme.COL_ACCENT
 
 @export_group("Auto Dismiss")
+@export var tutorial_id: String = ""
 @export var active_screen: GameBridge.Screen = GameBridge.Screen.TOP
 @export var dismiss_on_actions: PackedStringArray = PackedStringArray()
 @export var require_all_actions: bool = false
@@ -27,6 +28,12 @@ var _elapsed_visible: float = 0.0
 
 
 func _ready() -> void:
+	if not tutorial_id.is_empty() and Game.is_tutorial_done(tutorial_id):
+		if not next_hint.is_empty():
+			_reveal_next_deferred.call_deferred()
+		queue_free()
+		return
+
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	z_index = 10
 
@@ -132,10 +139,18 @@ func reveal() -> void:
 	tw.tween_property(self, "modulate:a", 1.0, 0.35)
 
 
+func _reveal_next_deferred() -> void:
+	var next_node: Node = get_node_or_null(next_hint)
+	if next_node is WorldHint:
+		(next_node as WorldHint).reveal()
+
+
 func dismiss() -> void:
 	if _dismissed:
 		return
 	_dismissed = true
+	if not tutorial_id.is_empty():
+		Game.mark_tutorial_done(tutorial_id)
 	if not next_hint.is_empty():
 		var next_node: Node = get_node_or_null(next_hint)
 		if next_node is WorldHint:

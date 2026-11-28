@@ -402,6 +402,7 @@ script = ExtResource("7_hint")
 hint_text = "SIGNAL ACTIVE!
 PRESS [E] TO OPEN LAPTOP"
 accent_color = Color(0.305882, 0.72549, 0.815686, 1)
+tutorial_id = "luna_laptop"
 active_screen = 1
 dismiss_on_actions = PackedStringArray("interact")
 dismiss_delay = 0.15
@@ -416,6 +417,7 @@ script = ExtResource("7_hint")
 hint_text = "TYPE THE COMMAND ON SCREEN
 PRESS [ENTER] TO SHOOT LIGHTNING!"
 accent_color = Color(0.984314, 0.94902, 0.211765, 1)
+tutorial_id = "luna_attack"
 active_screen = 1
 dismiss_delay = 0.5
 dismiss_on_luna_attack = true
@@ -430,6 +432,7 @@ offset_bottom = 245.0
 script = ExtResource("7_hint")
 hint_text = "NICE SHOT! CLEAR ENEMIES
 & REACH THE EXIT GATE ->"
+tutorial_id = "luna_exit"
 active_screen = 1
 auto_hide_seconds = 8.0
 start_hidden = true

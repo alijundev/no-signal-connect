@@ -269,6 +269,7 @@ script = ExtResource("5_hint")
 hint_text = "[A/D] or [LEFT/RIGHT] MOVE
 [SPACE / W] DOUBLE JUMP
 [SHIFT] SPRINT"
+tutorial_id = "allen_controls"
 dismiss_on_actions = PackedStringArray("move_right", "jump")
 require_all_actions = true
 dismiss_delay = 1.2
@@ -282,4 +283,5 @@ script = ExtResource("5_hint")
 hint_text = "[E] OPEN CHEST / TOWER
 CONNECT SIGNAL FOR LUNA!"
 accent_color = Color(0.305882, 0.72549, 0.815686, 1)
+tutorial_id = "allen_objective"
 dismiss_on_signal_active = true
