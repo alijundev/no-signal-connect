@@ -28,7 +28,7 @@ var _elapsed_visible: float = 0.0
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	z_index = -1
+	z_index = 10
 
 	add_theme_stylebox_override(
 		"panel",
