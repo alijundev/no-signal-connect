@@ -132,7 +132,7 @@ func _play_sequence() -> void:
 	_set_color_buttons_disabled(true)
 	_reset_button_highlights()
 	status_label.add_theme_color_override("font_color", RetroTheme.COL_ACCENT)
-	status_label.text = "Perhatikan pola! (Ronde %d/%d)" % [_round_index + 1, round_lengths.size()]
+	status_label.text = "Watch pattern! (Round %d/%d)" % [_round_index + 1, round_lengths.size()]
 
 	await get_tree().create_timer(0.5).timeout
 	if not _is_playback_valid(token):
@@ -153,7 +153,7 @@ func _play_sequence() -> void:
 	_input_index = 0
 	_set_color_buttons_disabled(false)
 	status_label.add_theme_color_override("font_color", RetroTheme.COL_TEXT)
-	status_label.text = "Giliranmu! (%d/%d)" % [0, _sequence.size()]
+	status_label.text = "Your turn! (%d/%d)" % [0, _sequence.size()]
 
 func _is_playback_valid(token: int) -> bool:
 	return token == _playback_token and is_inside_tree() and visible
@@ -176,20 +176,20 @@ func _on_color_pressed(color_idx: int) -> void:
 				_set_color_buttons_disabled(true)
 				Game.play_sfx("select")
 				status_label.add_theme_color_override("font_color", Color("#76ff7a"))
-				status_label.text = "Benar! Lanjut ronde %d..." % (_round_index + 1)
+				status_label.text = "Correct! Next round %d..." % (_round_index + 1)
 				var token: int = _playback_token
 				await get_tree().create_timer(0.6).timeout
 				if _is_playback_valid(token):
 					_start_current_round(true)
 		else:
 			status_label.add_theme_color_override("font_color", Color("#76ff7a"))
-			status_label.text = "Cocok! (%d/%d)" % [_input_index, _sequence.size()]
+			status_label.text = "Match! (%d/%d)" % [_input_index, _sequence.size()]
 	else:
 		_is_showing_sequence = true
 		_set_color_buttons_disabled(true)
 		Game.play_sfx("back")
 		status_label.add_theme_color_override("font_color", Color("#ff6b6b"))
-		status_label.text = "Salah! Perhatikan ulang polanya..."
+		status_label.text = "Wrong! Watch the pattern..."
 		var token: int = _playback_token
 		await get_tree().create_timer(0.8).timeout
 		if _is_playback_valid(token):
@@ -201,7 +201,7 @@ func _finish_puzzle() -> void:
 	_set_color_buttons_disabled(true)
 	Game.play_sfx("select")
 	status_label.add_theme_color_override("font_color", Color("#76ff7a"))
-	status_label.text = "Sinyal Menara Terhubung!"
+	status_label.text = "Tower Signal Connected!"
 	await get_tree().create_timer(0.35).timeout
 	if is_inside_tree() and visible:
 		visible = false

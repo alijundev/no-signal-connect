@@ -3,6 +3,7 @@ extends HitboxComponent
 
 @export var speed: float = 600.0
 @export var direction: float = 1.0
+var is_boosted: bool = false
 
 @onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 
@@ -14,8 +15,11 @@ func _ready() -> void:
 
 	if animated_sprite != null:
 		animated_sprite.flip_h = direction < 0.0
-		if animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"default"):
-			animated_sprite.play(&"default")
+		if animated_sprite.sprite_frames != null:
+			if is_boosted and animated_sprite.sprite_frames.has_animation(&"boosted"):
+				animated_sprite.play(&"boosted")
+			elif animated_sprite.sprite_frames.has_animation(&"default"):
+				animated_sprite.play(&"default")
 
 func _on_area_hit(area: Area2D) -> void:
 	if area is HurtboxComponent:

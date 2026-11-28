@@ -31,7 +31,7 @@ horizontal_alignment = 1
 
 [node name="StatusLabel" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
-text = "Perhatikan urutan warna..."
+text = "Watch the color pattern..."
 horizontal_alignment = 1
 
 [node name="ColorGrid" type="GridContainer" parent="PanelContainer/VBoxContainer"]
@@ -44,25 +44,25 @@ columns = 2
 [node name="RedButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
 layout_mode = 2
 focus_mode = 0
-text = "MERAH"
+text = "RED"
 
 [node name="BlueButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
 layout_mode = 2
 focus_mode = 0
-text = "BIRU"
+text = "BLUE"
 
 [node name="GreenButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
 layout_mode = 2
 focus_mode = 0
-text = "HIJAU"
+text = "GREEN"
 
 [node name="YellowButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
 layout_mode = 2
 focus_mode = 0
-text = "KUNING"
+text = "YELLOW"
 
 [node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
-text = "Tutup"
+text = "Close"

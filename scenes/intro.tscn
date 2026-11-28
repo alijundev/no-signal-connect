@@ -1136,5 +1136,3 @@ frame_progress = 0.25242606
 position = Vector2(251, 384)
 
 [node name="DialogBox" parent="." unique_id=1415740391 instance=ExtResource("10_dryi7")]
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1175211581]

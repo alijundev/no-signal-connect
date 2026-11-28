@@ -23,7 +23,7 @@ offset_left = -80.0
 offset_top = -82.0
 offset_right = 81.0
 offset_bottom = -59.0
-text = "[E] Nyalakan Menara"
+text = "[E] Activate Tower"
 label_settings = SubResource("LabelSettings_tv6e2")
 
 [node name="CablePuzzle" parent="." unique_id=1258842236 instance=ExtResource("2_p4xfq")]

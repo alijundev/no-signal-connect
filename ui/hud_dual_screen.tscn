@@ -1,57 +1,115 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1u3jgb6s6p8g"]
+[gd_scene format=3 uid="uid://b1u3jgb6s6p8g"]
 
 [ext_resource type="Script" uid="uid://bbk3fg6f4r0rp" path="res://ui/hud_dual_screen.gd" id="1_egntw"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ykp6k"]
-bg_color = Color(0.48040402, 0.9999997, 0.493371, 1)
 
 [node name="HudDualScreen" type="CanvasLayer"]
 script = ExtResource("1_egntw")
 
-[node name="TopHUD" type="MarginContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 85.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
+[node name="StatusCard" type="PanelContainer" parent="."]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 318.0
+offset_bottom = 114.0
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopHUD"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StatusCard"]
 layout_mode = 2
+theme_override_constants/separation = 7
 
-[node name="TopTitle" type="Label" parent="TopHUD/VBoxContainer"]
+[node name="HeaderRow" type="HBoxContainer" parent="StatusCard/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CharacterLabel" type="Label" parent="StatusCard/VBoxContainer/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ALLEN"
+
+[node name="SignalLabel" type="Label" parent="StatusCard/VBoxContainer/HeaderRow"]
+layout_mode = 2
+text = "SIGNAL: OFF"
+horizontal_alignment = 2
+
+[node name="HPRow" type="HBoxContainer" parent="StatusCard/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HPTag" type="Label" parent="StatusCard/VBoxContainer/HPRow"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+text = "HP"
+
+[node name="HPBar" type="ProgressBar" parent="StatusCard/VBoxContainer/HPRow"]
+custom_minimum_size = Vector2(180, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+show_percentage = false
+
+[node name="HPValue" type="Label" parent="StatusCard/VBoxContainer/HPRow/HPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "100/100"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="TopHPBar" type="ProgressBar" parent="TopHUD/VBoxContainer"]
-custom_minimum_size = Vector2(200, 18)
+[node name="EnergyRow" type="HBoxContainer" parent="StatusCard/VBoxContainer"]
 layout_mode = 2
-theme_override_styles/fill = SubResource("StyleBoxFlat_ykp6k")
+theme_override_constants/separation = 8
+
+[node name="EnergyTag" type="Label" parent="StatusCard/VBoxContainer/EnergyRow"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+text = "EN"
+
+[node name="EnergyBar" type="ProgressBar" parent="StatusCard/VBoxContainer/EnergyRow"]
+custom_minimum_size = Vector2(180, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
 show_percentage = false
 
-[node name="TopEnergyBar" type="ProgressBar" parent="TopHUD/VBoxContainer"]
-custom_minimum_size = Vector2(200, 18)
-layout_mode = 2
-show_percentage = false
-
-[node name="BottomHUD" type="MarginContainer" parent="."]
-offset_right = 216.0
-offset_bottom = 79.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BottomHUD"]
-layout_mode = 2
-
-[node name="BottomTitle" type="Label" parent="BottomHUD/VBoxContainer"]
-layout_mode = 2
+[node name="EnergyValue" type="Label" parent="StatusCard/VBoxContainer/EnergyRow/EnergyBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "100%"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BottomHPBar" type="ProgressBar" parent="BottomHUD/VBoxContainer"]
-custom_minimum_size = Vector2(200, 18)
+[node name="BuffLabel" type="Label" parent="StatusCard/VBoxContainer"]
+visible = false
 layout_mode = 2
-theme_override_styles/fill = SubResource("StyleBoxFlat_ykp6k")
-show_percentage = false
+text = "BUFF:"
 
-[node name="BottomEnergyBar" type="ProgressBar" parent="BottomHUD/VBoxContainer"]
-custom_minimum_size = Vector2(200, 18)
+[node name="StageChip" type="PanelContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -196.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = 60.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StageChip"]
 layout_mode = 2
-show_percentage = false
+theme_override_constants/separation = 4
+
+[node name="StageLabel" type="Label" parent="StageChip/VBoxContainer"]
+layout_mode = 2
+text = "STAGE 1/2"
+horizontal_alignment = 2
+
+[node name="PauseHintLabel" type="Label" parent="StageChip/VBoxContainer"]
+layout_mode = 2
+text = "[ESC] PAUSE"
+horizontal_alignment = 2

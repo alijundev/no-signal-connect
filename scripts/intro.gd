@@ -53,7 +53,7 @@ var _skipping: bool = false
 
 func _ready() -> void:
 	Game._apply_mode(Game.SCENE_INTRO)   # supaya bisa dites langsung dengan F6
-	_add_skip_hint()
+	_add_skip_button()
 
 	if ResourceLoader.exists(BOX_ALLEN):
 		dialog.allen_box = load(BOX_ALLEN)
@@ -134,41 +134,51 @@ func _run() -> void:
 	await get_tree().create_timer(0.4).timeout
 
 	# 6. Lanjut ke game
-	if not _skipping:
-		_skipping = true
-		Game.set_intro_watched(true)
-		Game.go_to(Game.SCENE_GAME)
+	_go_to_game()
+
+func _go_to_game() -> void:
+	if _skipping:
+		return
+	_skipping = true
+	Game.play_sfx("select")
+	Game.go_to(Game.SCENE_GAME)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _skipping:
 		return
 	if event.is_action_pressed("ui_cancel"):
-		_skipping = true
-		Game.set_intro_watched(true)
-		Game.play_sfx("select")
-		Game.go_to(Game.SCENE_GAME)
+		_go_to_game()
 		get_viewport().set_input_as_handled()
 
-func _add_skip_hint() -> void:
+func _add_skip_button() -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 60
 	add_child(layer)
 
-	var label := Label.new()
-	label.text = "[ESC] SKIP"
-	label.anchor_left = 1.0
-	label.anchor_right = 1.0
-	label.offset_left = -150.0
-	label.offset_top = 14.0
-	label.offset_right = -16.0
-	label.offset_bottom = 38.0
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	label.modulate = Color(1.0, 1.0, 1.0, 0.7)
+	var btn := RetroButton.new()
+	btn.text = "SKIP [ESC]"
+	btn.press_sfx = ""
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.anchor_left = 1.0
+	btn.anchor_right = 1.0
+	btn.offset_left = -164.0
+	btn.offset_top = 14.0
+	btn.offset_right = -16.0
+	btn.offset_bottom = 48.0
+
 	var font: Font = Game.RetroTheme.load_font()
 	if font != null:
-		label.add_theme_font_override("font", font)
-		label.add_theme_font_size_override("font_size", 10)
-	layer.add_child(label)
+		btn.add_theme_font_override("font", font)
+	btn.add_theme_font_size_override("font_size", 10)
+	btn.add_theme_color_override("font_color", Game.RetroTheme.COL_TEXT)
+	btn.add_theme_color_override("font_hover_color", Game.RetroTheme.COL_ACCENT)
+	btn.add_theme_color_override("font_outline_color", Game.RetroTheme.COL_OUTLINE)
+	btn.add_theme_constant_override("outline_size", 2)
+	btn.add_theme_stylebox_override("normal", Game.RetroTheme.pill_style(Game.RetroTheme.COL_EXTRUDE))
+	btn.add_theme_stylebox_override("hover", Game.RetroTheme.pill_style(Game.RetroTheme.COL_ALLEN))
+	btn.add_theme_stylebox_override("pressed", Game.RetroTheme.pill_style(Game.RetroTheme.COL_ALLEN))
+	btn.pressed.connect(_go_to_game)
+	layer.add_child(btn)
 
 # ------------------------
 # GERAKAN (global_position, selalu searah _dir)

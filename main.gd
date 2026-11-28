@@ -17,8 +17,10 @@ const ALLEN_MUSIC: Array[String] = [
 const LUNA_MUSIC: Array[String] = [
 	"res://assets/audio/stage_luna1.mp3",
 ]
+const WorldBackdropScript = preload("res://scripts/ui/world_backdrop.gd")
+
 const ALLEN_VOLUME_DB := 4.0   # musik stage Allen (makin mendekati 0 makin keras)
-const LUNA_VOLUME_DB := -10 # musik stage Luna
+const LUNA_VOLUME_DB := -10.0 # musik stage Luna
 
 @onready var top_container: SubViewportContainer = $TopContainer
 @onready var bottom_container: SubViewportContainer = $BottomContainer
@@ -29,6 +31,8 @@ const LUNA_VOLUME_DB := -10 # musik stage Luna
 
 var fade_rect: ColorRect
 var is_switching: bool = false
+var _top_backdrop: WorldBackdropScript
+var _bottom_backdrop: WorldBackdropScript
 
 func _ready() -> void:
 	get_tree().paused = false
@@ -44,8 +48,20 @@ func _ready() -> void:
 	game_over_screen.retry_requested.connect(_on_retry_or_restart)
 	game_over_screen.main_menu_requested.connect(_on_go_main_menu)
 
+	_setup_backdrops()
 	_create_fade_rect()
 	_show_top_screen()
+
+func _setup_backdrops() -> void:
+	_top_backdrop = WorldBackdropScript.new()
+	_top_backdrop.kind = WorldBackdropScript.Kind.SURFACE_DAY
+	top_viewport.add_child(_top_backdrop)
+	top_viewport.move_child(_top_backdrop, 0)
+
+	_bottom_backdrop = WorldBackdropScript.new()
+	_bottom_backdrop.kind = WorldBackdropScript.Kind.UNDERGROUND
+	bottom_viewport.add_child(_bottom_backdrop)
+	bottom_viewport.move_child(_bottom_backdrop, 0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not is_switching and not game_over_screen.visible and not pause_menu.visible:
@@ -125,9 +141,10 @@ func _show_bottom_screen() -> void:
 	_play_stage_music(LUNA_MUSIC, LUNA_VOLUME_DB)     # musik stage Luna            # musik stage Luna
 
 func _set_level_active(viewport: SubViewport, active: bool) -> void:
-	if viewport.get_child_count() == 0:
-		return
-	viewport.get_child(0).process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
+	for child: Node in viewport.get_children():
+		if child is WorldBackdropScript:
+			continue
+		child.process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
 
 # ------------------------
 # STAGE
@@ -141,6 +158,9 @@ func _load_stage(index: int) -> void:
 	_clear_viewport(top_viewport)
 	_clear_viewport(bottom_viewport)
 
+	if _top_backdrop != null:
+		_top_backdrop.set_kind(WorldBackdropScript.Kind.SURFACE_DAY if index == 0 else WorldBackdropScript.Kind.SURFACE_DUSK)
+
 	var new_top_scene: Node2D = (load(surface_levels[index]) as PackedScene).instantiate() as Node2D
 	var new_bottom_scene: Node2D = (load(underground_levels[index]) as PackedScene).instantiate() as Node2D
 
@@ -152,6 +172,8 @@ func _load_stage(index: int) -> void:
 
 func _clear_viewport(viewport: SubViewport) -> void:
 	for child: Node in viewport.get_children():
+		if child is WorldBackdropScript:
+			continue
 		viewport.remove_child(child)
 		child.queue_free()
 

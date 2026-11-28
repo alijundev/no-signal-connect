@@ -64,14 +64,14 @@ func _on_port_pressed(port: int, ref: Button) -> void:
 		ref.modulate = Color(0.75, 1.0, 0.75)
 		current_step += 1
 		status_label.add_theme_color_override("font_color", Color("#76ff7a"))
-		status_label.text = "Port %d Terhubung! (%d/%d)" % [port, current_step - 1, total_step]
+		status_label.text = "Port %d Connected! (%d/%d)" % [port, current_step - 1, total_step]
 		if current_step > total_step:
 			puzzle_solved.emit()
 			visible = false
 	else:
 		reset_puzzle()
 		status_label.add_theme_color_override("font_color", Color("#ff6b6b"))
-		status_label.text = "Urutan salah! Mulai dari 1 -> 2 -> 3 -> 4"
+		status_label.text = "Wrong order! Start: 1 -> 2 -> 3 -> 4"
 
 func reset_puzzle() -> void:
 	current_step = 1
@@ -80,7 +80,7 @@ func reset_puzzle() -> void:
 		port.disabled = false
 		port.modulate = Color.WHITE
 	status_label.add_theme_color_override("font_color", RetroTheme.COL_ACCENT)
-	status_label.text = "Sambungkan Port: 1 -> 2 -> 3 -> 4"
+	status_label.text = "Connect Ports: 1 -> 2 -> 3 -> 4"
 
 func _input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("ui_cancel"):

@@ -1,43 +1,47 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://mpx7bqsp2x3p"]
 
-[ext_resource type="Script" path="res://mechanics/random_chest/random_chest.gd" id="1_rc"]
+[ext_resource type="Script" uid="uid://ds8rinq7l5maw" path="res://mechanics/random_chest/random_chest.gd" id="1_rc"]
+[ext_resource type="AudioStream" uid="uid://bbspfid16u8h3" path="res://assets/audio/cat-laugh-meme-1.mp3" id="2_6w6rr"]
+[ext_resource type="AudioStream" uid="uid://doomqc2ygwucv" path="res://assets/audio/cihuy.mp3" id="2_c80yi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rc"]
 size = Vector2(48, 40)
 
-[node name="RandomChest" type="Area2D"]
+[node name="RandomChest" type="Area2D" unique_id=273890674]
 collision_layer = 32
 collision_mask = 2
 script = ExtResource("1_rc")
+drop_chance = 0.5
+buff_sound = ExtResource("2_c80yi")
+empty_sound = ExtResource("2_6w6rr")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1147687844]
 shape = SubResource("RectangleShape2D_rc")
 
-[node name="ChestBase" type="ColorRect" parent="."]
+[node name="ChestBase" type="ColorRect" parent="." unique_id=960311118]
 offset_left = -18.0
 offset_top = -6.0
 offset_right = 18.0
 offset_bottom = 14.0
 color = Color(0.55, 0.34, 0.16, 1)
 
-[node name="ChestLid" type="ColorRect" parent="."]
+[node name="ChestLid" type="ColorRect" parent="." unique_id=2026220001]
 offset_left = -19.0
 offset_top = -14.0
 offset_right = 19.0
 offset_bottom = -4.0
 color = Color(0.72, 0.46, 0.22, 1)
 
-[node name="ChestLock" type="ColorRect" parent="."]
+[node name="ChestLock" type="ColorRect" parent="." unique_id=704425859]
 offset_left = -3.0
 offset_top = -7.0
 offset_right = 3.0
-offset_bottom = 0.0
 color = Color(0.98, 0.9, 0.28, 1)
 
-[node name="PromptLabel" type="Label" parent="."]
+[node name="PromptLabel" type="Label" parent="." unique_id=1268190081]
 visible = false
 offset_left = -64.0
 offset_top = -48.0
 offset_right = 64.0
 offset_bottom = -28.0
-text = "[E] Buka Peti"
+text = "[E] Open Chest"

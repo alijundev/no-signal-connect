@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c850y6gdphibe" path="res://entities/players/luna/luna.tscn" id="1_s2rt8"]
 [ext_resource type="Script" uid="uid://e6cpnmi4uwp8" path="res://components/hitbox_component.gd" id="2_0i5ml"]
-[ext_resource type="PackedScene" uid="uid://cub7n5emo2kju" path="res://entities/enemies/broken_robot/broken_robot.tscn" id="3_0xy71"]
+[ext_resource type="PackedScene" path="res://entities/enemies/broken_robot/broken_robot_v2.tscn" id="3_0xy71"]
 [ext_resource type="PackedScene" uid="uid://b0ceim5d5dhox" path="res://mechanics/stage_exit/stage_exit.tscn" id="4_ov4c0"]
 [ext_resource type="Texture2D" uid="uid://bxjpmmwnqq1a7" path="res://assets/Maps/TilesetMaps2.png" id="5_yhj6h"]
 [ext_resource type="Texture2D" uid="uid://be83drqlwxrg6" path="res://assets/Efek/scifi_warp_002/scifi_warp_002_small_red/spritesheet.png" id="6_trap"]
