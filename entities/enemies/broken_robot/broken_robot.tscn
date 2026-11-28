@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bxo1ck8obk40n" path="res://components/health_component.gd" id="1_mecv4"]
 [ext_resource type="Script" uid="uid://b6uevgx14m2fk" path="res://components/hurtbox_component.gd" id="2_aiumg"]
 [ext_resource type="Script" uid="uid://e6cpnmi4uwp8" path="res://components/hitbox_component.gd" id="3_tnuj8"]
+[ext_resource type="Texture2D" uid="uid://djajgdyu87rfy" path="res://assets/Character/Monster/monster_1.png" id="4_mon1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(32, 48)
@@ -14,7 +15,48 @@ size = Vector2(32, 48)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1mcbs"]
 size = Vector2(34, 46)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1_0"]
+atlas = ExtResource("4_mon1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1_1"]
+atlas = ExtResource("4_mon1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1_2"]
+atlas = ExtResource("4_mon1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1_3"]
+atlas = ExtResource("4_mon1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1_4"]
+atlas = ExtResource("4_mon1")
+region = Rect2(128, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_rnang"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1_4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
 
 [node name="BrokenRobot" type="CharacterBody2D" unique_id=1996399772]
 collision_layer = 4
@@ -22,14 +64,6 @@ script = ExtResource("1_aiumg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=611595797]
 shape = SubResource("RectangleShape2D_bsltl")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1947871874]
-visible = false
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = 24.0
-color = Color(0.4045111, 0.40451115, 0.4045111, 1)
 
 [node name="HealthComponent" type="Node" parent="." unique_id=656179281]
 script = ExtResource("1_mecv4")
@@ -59,4 +93,9 @@ shape = SubResource("RectangleShape2D_1mcbs")
 target_position = Vector2(24, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=617096869]
+texture_filter = 1
+position = Vector2(0, -8)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_rnang")
+animation = &"walk"
+autoplay = "walk"
