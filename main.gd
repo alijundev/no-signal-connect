@@ -24,17 +24,55 @@ const LUNA_VOLUME_DB := -10 # musik stage Luna
 @onready var bottom_container: SubViewportContainer = $BottomContainer
 @onready var top_viewport: SubViewport = $TopContainer/TopViewport
 @onready var bottom_viewport: SubViewport = $BottomContainer/BottomViewport
+@onready var pause_menu: PauseMenu = $PauseMenu
+@onready var game_over_screen: GameOverScreen = $GameOverScreen
 
 var fade_rect: ColorRect
 var is_switching: bool = false
 
 func _ready() -> void:
+	get_tree().paused = false
+	GameBridge.is_game_over = false
 	GameBridge.stage_changed.connect(_load_stage)
 	GameBridge.signal_state_changed.connect(_on_signal_state_changed)
+	GameBridge.game_over.connect(_on_game_over)
 	GameBridge.game_won.connect(_on_game_won)
+
+	pause_menu.resume_requested.connect(_on_pause_resume)
+	pause_menu.restart_requested.connect(_on_retry_or_restart)
+	pause_menu.main_menu_requested.connect(_on_go_main_menu)
+	game_over_screen.retry_requested.connect(_on_retry_or_restart)
+	game_over_screen.main_menu_requested.connect(_on_go_main_menu)
 
 	_create_fade_rect()
 	_show_top_screen()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and not is_switching and not game_over_screen.visible and not pause_menu.visible:
+		get_tree().paused = true
+		pause_menu.open_pause()
+		Game.play_sfx("select")
+		get_viewport().set_input_as_handled()
+
+func _on_pause_resume() -> void:
+	get_tree().paused = false
+
+func _on_retry_or_restart() -> void:
+	get_tree().paused = false
+	GameBridge.reset_state()
+	Game.go_to(Game.SCENE_GAME)
+
+func _on_go_main_menu() -> void:
+	get_tree().paused = false
+	GameBridge.reset_state()
+	Game.go_to(Game.SCENE_MAIN_MENU)
+
+func _on_game_over() -> void:
+	if pause_menu.visible:
+		pause_menu.close_pause()
+	Game.stop_music(0.5)
+	get_tree().paused = true
+	game_over_screen.show_screen()
 
 # ------------------------
 # TRANSISI (kotak hitam dibuat lewat kode)

@@ -202,7 +202,7 @@ func _traverse_hole_and_walk(sprite: AnimatedSprite2D, ground_y: float, jump_pla
 
 func _finish_outro() -> void:
 	_skipping = true
-	Game.go_to(Game.SCENE_MAIN_MENU)
+	Game.go_to(Game.SCENE_WIN)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _skipping:

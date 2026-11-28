@@ -9,6 +9,7 @@ const MUSIC_MENU := "res://assets/audio/main menu.mp3"   # sesuaikan nama file
 const SCENE_GAME := "res://main.tscn"
 const SCENE_INTRO := "res://scenes/intro.tscn"
 const SCENE_OUTRO := "res://scenes/outro.tscn"
+const SCENE_WIN := "res://scenes/win_screen.tscn"
 const SCENE_SETTINGS := "res://scenes/settings.tscn"
 const SCENE_FEEDBACK := "res://scenes/feedback.tscn"
 const SCENE_CREDITS := "res://scenes/credits.tscn"

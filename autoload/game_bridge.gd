@@ -21,13 +21,21 @@ signal player_buff_updated(screen: Screen, buff_text: String)
 
 var active_screen: Screen = Screen.TOP
 var is_signal_active: bool = false
+var is_game_over: bool = false
+
+func reset_state() -> void:
+	current_stage = 0
+	is_signal_active = false
+	is_game_over = false
+	active_screen = Screen.TOP
 
 func trigger_game_over() -> void:
+	if is_game_over:
+		return
+	is_game_over = true
 	is_signal_active = false
-	current_stage = 0
 	game_over.emit()
 	print("Game Over")
-	get_tree().reload_current_scene.call_deferred()
 
 func set_signal_active(active: bool) -> void:
 	is_signal_active = active
