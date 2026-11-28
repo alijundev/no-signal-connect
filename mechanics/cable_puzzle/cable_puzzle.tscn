@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ves4gu5a2s80"]
 
-[ext_resource type="Script" uid="uid://5tn83lnxlb7i" path="res://mechanics/cable_puzzle.gd" id="1_h5ky5"]
+[ext_resource type="Script" uid="uid://5tn83lnxlb7i" path="res://mechanics/cable_puzzle/cable_puzzle.gd" id="1_h5ky5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gk1l"]
 bg_color = Color(0.7455422, 0.5666744, 0.2432853, 1)

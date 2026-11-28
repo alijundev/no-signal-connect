@@ -48,12 +48,12 @@ Game menggunakan skala grid dasar **`32 x 32` piksel** (1 *tile* = `32x32` px) t
 | **Tileset** | `surface_tiles.png` | `32 x 32` / tile | Lantai aspal, trotoar, platform gedung, & pagar pembatas. |
 | **Tileset** | `underground_tiles.png` | `32 x 32` / tile | Lantai beton retak, pipa limbah, platform besi, & dinding terowongan. |
 
-### Kontras Warna Antar-Dunia (*Readability Split-Screen*)
+### Kontras Warna Antar-Dunia (*Readability*)
 
-Karena dua dunia tampil bersamaan dalam satu layar:
+Karena pemain berpindah bergantian antara dua dunia dalam layar penuh:
 
-* **Layar Atas (Surface / Allen):** Gunakan palet warna terang atau kontras langit siang/sore (biru, abu-abu terang, aksen cyan untuk sinyal aktif).
-* **Layar Bawah (Underground / Luna):** Gunakan palet warna gelap dan hangat (abu-abu tua, cokelat karat, lumut, dengan aksen kuning elektrik/oranye agar karakter Luna dan proyektil petir mudah terlihat).
+* **Dunia Atas (Surface / Allen):** Gunakan palet warna terang atau kontras langit siang/sore (biru, abu-abu terang, aksen cyan untuk sinyal aktif).
+* **Dunia Bawah (Underground / Luna):** Gunakan palet warna gelap dan hangat (abu-abu tua, cokelat karat, lumut, dengan aksen kuning elektrik/oranye agar karakter Luna dan proyektil petir mudah terlihat).
 
 ---
 

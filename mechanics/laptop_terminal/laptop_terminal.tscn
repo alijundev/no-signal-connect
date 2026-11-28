@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dps2e2s2kgdeb"]
 
-[ext_resource type="Script" uid="uid://cea1u8l7yhx5v" path="res://mechanics/laptop_terminal.gd" id="1_nims6"]
+[ext_resource type="Script" uid="uid://cea1u8l7yhx5v" path="res://mechanics/laptop_terminal/laptop_terminal.gd" id="1_nims6"]
 
 [node name="LaptopTerminal" type="CanvasLayer" unique_id=1518743068]
 visible = false

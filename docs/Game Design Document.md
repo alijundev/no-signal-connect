@@ -2,7 +2,7 @@
 
 ## 1. Ringkasan Game
 
-Game ini adalah platformer puzzle side-scroller 2D pixel tentang dua kakak beradik yang terpisah dan harus saling membantu untuk pulang bersama, dimainkan lewat dua sudut pandang karakter yang saling bergantung.
+Game ini adalah platformer puzzle side-scroller 2D pixel tentang dua kakak beradik yang terpisah dan harus saling membantu untuk pulang bersama, dimainkan **secara bergantian dalam layar penuh** lewat dua sudut pandang karakter yang saling bergantung.
 
 | Aspek           | Keterangan                                                                                                 |
 | --------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -45,13 +45,13 @@ Kakak digambarkan sebagai network engineer hebat yang mampu menyelesaikan banyak
 
 ## 4. Mekanik Inti
 
-Game memakai dua sudut pandang yang berjalan saling terkait: kemajuan A membuka kemampuan B.
+Game memakai dua sudut pandang yang berjalan **bergantian secara berurutan** dalam satu stage (mode bergantian layar penuh): kemajuan A membuka giliran dan kemampuan B.
 
-1. A bergerak menyusuri stage, melewati puzzle, dan mencari menara sinyal.
+1. A bergerak menyusuri stage permukaan, melewati puzzle, dan mencari menara sinyal.
 2. A menyambungkan kabel internet ke menara agar menara berfungsi.
-3. Menara yang menyala memberi B jangkauan sinyal di underground.
+3. Menara yang menyala memicu transisi ke layar B di underground dengan sinyal aktif.
 4. B membuka layar laptop, menulis command tertentu, dan menyerang musuh dengan kilatan petir.
-5. B maju melewati stage underground sampai menemukan jalan keluar.
+5. B maju melewati stage underground sampai menemukan jalan keluar untuk lanjut ke stage berikutnya.
 
 ### Sudut pandang A (Network Engineer)
 

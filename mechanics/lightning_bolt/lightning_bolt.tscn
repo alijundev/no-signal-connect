@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bpbdgtsj1iigy"]
 
-[ext_resource type="Script" uid="uid://cmmd3d8hdptn0" path="res://mechanics/lightning_bolt.gd" id="1_enobm"]
+[ext_resource type="Script" uid="uid://cmmd3d8hdptn0" path="res://mechanics/lightning_bolt/lightning_bolt.gd" id="1_enobm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bsltl"]
 size = Vector2(32, 12)

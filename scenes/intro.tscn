@@ -1132,12 +1132,6 @@ animation = &"walk_right"
 autoplay = "walk_right"
 frame_progress = 0.25242606
 
-[node name="AllenStop" type="Marker2D" parent="." unique_id=253490555]
-position = Vector2(166, 384)
-
-[node name="LunaStop" type="Marker2D" parent="." unique_id=170974612]
-position = Vector2(193, 384)
-
 [node name="HolePoint" type="Marker2D" parent="." unique_id=659714592]
 position = Vector2(251, 384)
 

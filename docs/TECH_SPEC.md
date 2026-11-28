@@ -4,53 +4,57 @@ Dokumen ini menjadi referensi teknis bagi Programmer dan Level Designer dalam me
 
 ---
 
-## 1. Arsitektur Dual-Screen (`SubViewport`)
+## 1. Arsitektur Dual-Viewport Bergantian Layar Penuh
 
-Permainan merender dua dunia terpisah secara bersamaan dalam satu layar menggunakan struktur berikut pada `res://main.tscn`:
+Permainan menampung dua dunia terpisah dalam satu *scene* utama menggunakan dua `SubViewport` berukuran penuh (`1280x720`) pada `res://main.tscn`, yang ditampilkan **secara bergantian** (bukan *split-screen* simultan):
 
 ```text
-Main (Node - main.gd)
-├── VBoxContainer
-│   ├── TopContainer (SubViewportContainer)
-│   │   └── TopViewport (SubViewport)      <-- Memuat scene surface_XX.tscn (Allen)
-│   └── BottomContainer (SubViewportContainer)
-│       └── BottomViewport (SubViewport)   <-- Memuat scene underground_XX.tscn (Luna)
-└── HudDualScreen (CanvasLayer)            <-- UI statis lintas stage
-
+Main (Control - main.gd)
+├── HudDualScreen (CanvasLayer)            <-- UI statis lintas stage (HP, Energy, Status Sinyal)
+├── TopContainer (SubViewportContainer)
+│   └── TopViewport (SubViewport)          <-- Memuat scene surface_XX.tscn (Allen)
+└── BottomContainer (SubViewportContainer)
+    └── BottomViewport (SubViewport)       <-- Memuat scene underground_XX.tscn (Luna)
 ```
 
-### Aturan Transisi Level
+### Alur Pergantian Layar & Transisi Level
 
-* **Dilarang menggunakan `get_tree().change_scene_to_file()**` untuk perpindahan antar-stage karena akan menghancurkan pembagi layar `SubViewport` dan `HudDualScreen`.
-* Pergantian stage dikendalikan oleh `main.gd` dengan menghapus *child* lama di dalam `TopViewport` dan `BottomViewport` (`queue_free()`), lalu melakukan `instantiate()` pasangan level baru berdasarkan indeks `current_stage`.
-* Seluruh pop-up UI spesifik dunia (seperti `CablePuzzle` milik menara atau `LaptopTerminal` milik Luna) dibungkus menggunakan `CanvasLayer` di dalam *scene* masing-masing agar otomatis terkurung di dalam *SubViewport*-nya sendiri.
+* **Mode Bergantian Layar Penuh:** Setiap stage dimulai pada layar **Allen (`TopContainer`)**. Selama giliran Allen, `BottomContainer` disembunyikan (`visible = false`) dan dibekukan (`PROCESS_MODE_DISABLED`). Saat `SignalTower` diaktifkan (`GameBridge.signal_state_changed(true)`), `main.gd` memanggil `switch_to_underground()` dengan *fade* layar hitam, membekukan dunia atas, lalu mengaktifkan **Luna (`BottomContainer`)** beserta musik latarnya.
+* **Dilarang menggunakan `get_tree().change_scene_to_file()`** untuk perpindahan antar-stage di dalam gameplay karena akan menghancurkan `TopViewport`, `BottomViewport`, dan `HudDualScreen`.
+* Pergantian stage dikendalikan oleh `main.gd` (`_load_stage()`) dengan menghapus *child* lama di dalam `TopViewport` dan `BottomViewport` (`queue_free()`), lalu melakukan `instantiate()` pasangan level baru berdasarkan indeks `current_stage` dan kembali menampilkan layar Allen.
+* Seluruh pop-up UI spesifik dunia (seperti `CablePuzzle` milik menara atau `LaptopTerminal` milik Luna) dibungkus menggunakan `CanvasLayer` di dalam *scene* masing-masing agar terisolasi per dunia.
 
 ---
 
-## 2. Global Event Bus (`GameBridge`)
+## 2. Global Autoloads (`GameBridge` & `Game`)
 
-Autoload `GameBridge` (`res://autoload/game_bridge.gd`) bertindak sebagai perantara tunggal (*singleton*) antara dunia permukaan (`TOP`), dunia bawah (`BOTTOM`), `Main`, dan `HudDualScreen`. Node di layar atas dilarang mengakses node di layar bawah secara langsung menggunakan `get_node()`.
+### A. `GameBridge` (`res://autoload/game_bridge.gd`)
+Bertindak sebagai *event bus* tunggal antara dunia permukaan (`TOP`), dunia bawah (`BOTTOM`), `Main`, dan `HudDualScreen`. Node di layar atas dilarang mengakses node di layar bawah secara langsung menggunakan `get_node()`.
 
-### Enum & State Global
+#### Enum & State Global
 
 | Properti | Tipe | Default | Fungsi |
 | --- | --- | --- | --- |
 | `Screen` | `enum` | `TOP, BOTTOM` | Identitas layar aktif dan kepemilikan karakter (`assigned_screen`). |
-| `active_screen` | `Screen` | `Screen.BOTTOM` | Menentukan karakter mana yang saat ini menerima input gerak/aksi. |
-| `is_signal_active` | `bool` | `false` | Status menara sinyal. Harus `true` agar Luna bisa membuka laptop & keluar stage. |
+| `active_screen` | `Screen` | `Screen.TOP` | Menentukan karakter mana yang saat ini tampil penuh dan menerima input gerak/aksi. |
+| `is_signal_active` | `bool` | `false` | Status menara sinyal. Harus `true` agar berpindah ke Luna serta membuka laptop & pintu keluar stage. |
 | `current_stage` | `int` | `0` | Indeks stage aktif (berbasis 0) untuk array level di `main.gd`. |
-| `total_stages` | `int` | `2` | Jumlah total stage sebelum memicu kondisi menang (*Win*). |
+| `total_stages` | `int` | `2` | Jumlah total stage sebelum memicu kondisi menang (`game_won`). |
 
-### Peta Sinyal Global
+#### Peta Sinyal Global
 
 | Nama Sinyal | Parameter | Pengirim (*Emitter*) | Penerima (*Listener*) |
 | --- | --- | --- | --- |
-| `screen_switched` | `new_screen: Screen` | `GameBridge` (`Tab`) | `HudDualScreen` |
-| `signal_state_changed` | `is_active: bool` | `SignalTower` via `GameBridge` | `HudDualScreen`, `StageExit` |
+| `screen_switched` | `new_screen: Screen` | `Main` (`_show_top_screen` / `_show_bottom_screen`) | `HudDualScreen` |
+| `signal_state_changed` | `is_active: bool` | `SignalTower` via `GameBridge` | `Main` (transisi ke Luna), `HudDualScreen`, `StageExit` |
 | `player_health_updated` | `screen: Screen, current: float, max_val: float` | `BasePlayer` | `HudDualScreen` |
 | `player_energy_updated` | `screen: Screen, current: float, max_val: float` | `BasePlayer` | `HudDualScreen` |
-| `game_over` | *(tanpa parameter)* | `BasePlayer` (`health_comp.died`) | `GameBridge` (reset state & reload) |
-| `stage_changed` | `stage_index: int` | `GameBridge` (`complete_stage`) | `Main` (`_load_stage`) |
+| `game_over` | *(tanpa parameter)* | `BasePlayer` (`health_comp.died`) via `GameBridge` | `GameBridge` (reset state & reload) |
+| `stage_changed` | `stage_index: int` | `GameBridge` (`completed_stage`) | `Main` (`_load_stage`) |
+| `game_won` | *(tanpa parameter)* | `GameBridge` (`completed_stage`) | `Main` (`_on_game_won`) |
+
+### B. `Game` (`res://autoload/game.gd`)
+Mengelola navigasi antar-*screen* utama (`MainMenu` $\rightarrow$ `Intro` $\rightarrow$ `Main`), `RetroTheme`, overlay CRT (`crt.gdshader`), transisi *pixel fade*, penyimpanan `user://settings.cfg`, pool SFX UI, serta pemutaran BGM dengan *crossfade*.
 
 ---
 
