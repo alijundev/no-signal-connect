@@ -393,22 +393,43 @@ metadata/_custom_type_script = "uid://e6cpnmi4uwp8"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FallHazard" unique_id=1043317873]
 shape = SubResource("RectangleShape2D_fall")
 
-[node name="TutorialCombat" type="PanelContainer" parent="."]
+[node name="TutorialLaptop" type="PanelContainer" parent="."]
 offset_left = 40.0
 offset_top = 185.0
 offset_right = 340.0
-offset_bottom = 255.0
+offset_bottom = 245.0
 script = ExtResource("7_hint")
 hint_text = "SIGNAL ACTIVE!
-[E] OPEN LAPTOP -> TYPE COMMAND
-[ENTER] SHOOT LIGHTNING!"
+PRESS [E] TO OPEN LAPTOP"
 accent_color = Color(0.305882, 0.72549, 0.815686, 1)
+active_screen = 1
+dismiss_on_actions = PackedStringArray("interact")
+dismiss_delay = 0.15
+next_hint = NodePath("../TutorialAttack")
+
+[node name="TutorialAttack" type="PanelContainer" parent="."]
+offset_left = 40.0
+offset_top = 185.0
+offset_right = 380.0
+offset_bottom = 245.0
+script = ExtResource("7_hint")
+hint_text = "TYPE THE COMMAND ON SCREEN
+PRESS [ENTER] TO SHOOT LIGHTNING!"
+accent_color = Color(0.984314, 0.94902, 0.211765, 1)
+active_screen = 1
+dismiss_delay = 0.5
+dismiss_on_luna_attack = true
+start_hidden = true
+next_hint = NodePath("../TutorialExit")
 
 [node name="TutorialExit" type="PanelContainer" parent="."]
-offset_left = 930.0
+offset_left = 910.0
 offset_top = 185.0
 offset_right = 1230.0
 offset_bottom = 245.0
 script = ExtResource("7_hint")
-hint_text = "DODGE TRAPS & ENEMIES!
-REACH THE EXIT GATE ->"
+hint_text = "NICE SHOT! CLEAR ENEMIES
+& REACH THE EXIT GATE ->"
+active_screen = 1
+auto_hide_seconds = 8.0
+start_hidden = true

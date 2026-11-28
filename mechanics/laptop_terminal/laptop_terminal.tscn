@@ -43,7 +43,7 @@ alignment = 1
 
 [node name="TitleLabel" type="Label" parent="LaptopFrame/ScreenMargin/VBoxContainer" unique_id=786877304]
 layout_mode = 2
-text = "[ TERMINAL ACTIVE ]"
+text = "TYPE COMMAND & PRESS [ENTER]"
 horizontal_alignment = 1
 
 [node name="CommandLabel" type="Label" parent="LaptopFrame/ScreenMargin/VBoxContainer" unique_id=655743001]
