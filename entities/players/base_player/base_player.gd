@@ -8,6 +8,17 @@ extends CharacterBody2D
 @export var jump_velocity: float = -400.0
 @export var max_jump: int = 2
 
+@export_group("Suara langkah")
+@export var step_sound: AudioStream                              ## isi di Inspector Allen dan Luna
+@export var step_volume_db: float = 10.0
+@export var step_frames: PackedInt32Array = PackedInt32Array()   ## kosong = otomatis
+
+@export_group("Suara lompat")
+@export var jump_sound: AudioStream                  ## isi di Inspector Allen dan Luna
+@export var jump_volume_db: float = -4.0
+@export var double_jump_pitch: float = 1.25          ## nada lompatan kedua (1.0 = sama)
+@export var jump_pitch_variation: float = 0.05
+
 @onready var energy_comp: EnergyComponent = $EnergyComponent
 @onready var health_comp: HealthComponent = $HealthComponent
 @onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
@@ -16,6 +27,9 @@ var can_move: bool = true
 var jump_count: int = 0
 var facing: int = 1  # 1 = kanan, -1 = kiri
 var is_sprinting: bool = false
+var is_attacking: bool = false
+var _footsteps: Footsteps
+var _jump_player: AudioStreamPlayer
 
 func _ready() -> void:
 	health_comp.died.connect(GameBridge.trigger_game_over)
@@ -24,6 +38,17 @@ func _ready() -> void:
 	_on_health_changed.call_deferred(health_comp.current_health, health_comp.max_health)
 	_on_energy_changed.call_deferred(energy_comp.current_energy, energy_comp.max_energy)
 	play_animation("idle")
+		# Suara langkah: hanya berbunyi saat menapak lantai di layar yang aktif
+	if animated_sprite and step_sound:
+		_footsteps = Footsteps.new()
+		add_child(_footsteps)
+		_footsteps.setup(animated_sprite, step_sound, step_volume_db, step_frames,
+			func(): return is_on_floor() and GameBridge.active_screen == assigned_screen)
+	if jump_sound:
+		_jump_player = AudioStreamPlayer.new()
+		_jump_player.stream = jump_sound
+		_jump_player.volume_db = jump_volume_db
+		add_child(_jump_player)
 
 func _on_health_changed(current: float, max_val: float):
 	GameBridge.player_health_updated.emit(assigned_screen, current, max_val)
@@ -40,6 +65,12 @@ func _physics_process(delta: float) -> void:
 			jump_count = 1
 	else:
 		jump_count = 0
+		
+		if Input.is_action_just_pressed("jump") and jump_count < max_jump:
+			velocity.y = jump_velocity
+			jump_count += 1
+			play_animation("jump", true)  # langsung putar, tanpa delay
+			_play_jump_sound()
 		
 	
 	# Berhenti kalau bukan layar ini atau tidak boleh bergerak
@@ -79,11 +110,20 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	process_animation()
 
+
+func _play_jump_sound() -> void:
+	if _jump_player == null:
+		return
+	# jump_count sudah bertambah: 1 = lompatan pertama, 2 = lompatan kedua di udara
+	var base_pitch := 1.0 if jump_count <= 1 else double_jump_pitch
+	_jump_player.pitch_scale = base_pitch + randf_range(-jump_pitch_variation, jump_pitch_variation)
+	_jump_player.play()
+	
 # ------------------------
 # ANIMATION
 # ------------------------
 func process_animation() -> void:
-	if animated_sprite == null:
+	if animated_sprite == null or is_attacking:
 		return
 
 	if not is_on_floor():

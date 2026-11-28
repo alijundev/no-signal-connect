@@ -1,6 +1,8 @@
-[gd_scene load_steps=34 format=3 uid="uid://b2fyy7rlorhk5"]
+[gd_scene format=3 uid="uid://b2fyy7rlorhk5"]
 
 [ext_resource type="PackedScene" uid="uid://th6ghmqnm5rg" path="res://entities/players/base_player/base_player.tscn" id="1_1hfh5"]
+[ext_resource type="AudioStream" uid="uid://r2re3jnnu1uu" path="res://assets/audio/jump_boy.mp3" id="2_6vgck"]
+[ext_resource type="AudioStream" uid="uid://bxat8oitxcrkl" path="res://assets/audio/walk.mp3" id="2_dcbcy"]
 [ext_resource type="Texture2D" uid="uid://c2uq6s7qqmpl6" path="res://assets/Character/Engineer(Allen)/idle_fix.png" id="2_p0ka2"]
 [ext_resource type="Texture2D" uid="uid://dr6g1w70y21nu" path="res://assets/Character/Engineer(Allen)/jump_fix.png" id="3_6vgck"]
 [ext_resource type="Texture2D" uid="uid://hiwcce3wukww" path="res://assets/Character/Engineer(Allen)/walk_fix.png" id="4_dcbcy"]
@@ -126,7 +128,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bgqys")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_left",
 "speed": 3.0
 }, {
@@ -137,7 +139,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xihus")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_right",
 "speed": 3.0
 }, {
@@ -160,7 +162,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kebdq")
 }],
-"loop": true,
+"loop": 1,
 "name": &"jump_left",
 "speed": 6.0
 }, {
@@ -183,7 +185,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ky5h4")
 }],
-"loop": true,
+"loop": 1,
 "name": &"jump_right",
 "speed": 6.0
 }, {
@@ -206,7 +208,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_alkhi")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_left",
 "speed": 7.0
 }, {
@@ -229,12 +231,15 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_shejq")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_right",
 "speed": 7.0
 }]
 
-[node name="Allen" instance=ExtResource("1_1hfh5")]
+[node name="Allen" unique_id=1748100683 instance=ExtResource("1_1hfh5")]
+step_sound = ExtResource("2_dcbcy")
+step_volume_db = -5.0
+jump_sound = ExtResource("2_6vgck")
 
 [node name="ColorRect" parent="." index="2"]
 visible = false
@@ -244,7 +249,7 @@ color = Color(0.11222548, 0.3556901, 0.7626215, 1)
 [node name="CollisionShape2D" parent="HurtboxComponent" index="0"]
 position = Vector2(3.5, 12)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="6"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="6" unique_id=80757941]
 texture_filter = 1
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_r20ol")

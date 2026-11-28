@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b76o1smmwl17r"
-path="res://.godot/imported/monster3.png-756677b2aa89ce001393526b302a5c0f.ctex"
+uid="uid://dssn3wkm6riyb"
+path="res://.godot/imported/spritesheet.png-5d09af7c39409cd8e9682e15cd20f322.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Character/Monster/monster3.png"
-dest_files=["res://.godot/imported/monster3.png-756677b2aa89ce001393526b302a5c0f.ctex"]
+source_file="res://assets/Efek/lightning_burst_001/lightning_burst_001_small_violet/spritesheet.png"
+dest_files=["res://.godot/imported/spritesheet.png-5d09af7c39409cd8e9682e15cd20f322.ctex"]
 
 [params]
 

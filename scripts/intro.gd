@@ -22,11 +22,19 @@ const BOX_LUNA := "res://assets/UI/chatbox girl.png"     # sesuaikan path-nya
 @export var fall_drift: float = 20.0
 @export var fall_time: float = 1.8
 
+@export_group("Suara langkah")
+@export var allen_step_sound: AudioStream
+@export var luna_step_sound: AudioStream
+@export var step_volume_db: float = 10.0
+@export var step_frames: PackedInt32Array = PackedInt32Array()   ## kosong = otomatis
+
 @export_group("Pintu jebakan")
 @export var trap_pause: float = 0.5            ## Luna terdiam sebelum pintu bergetar
 @export var trap_shake_time: float = 0.6
 @export var trap_open_distance: float = 72.0   ## tiap sisi bergeser sejauh ini (px)
 @export var trap_open_time: float = 0.35
+@export var trap_close_delay: float = 0.4      ## jeda setelah Luna jatuh sebelum pintu menutup
+@export var trap_close_time: float = 0.3
 
 @onready var allen: AnimatedSprite2D = $Allen
 @onready var luna: AnimatedSprite2D = $Luna
@@ -38,6 +46,9 @@ const BOX_LUNA := "res://assets/UI/chatbox girl.png"     # sesuaikan path-nya
 
 var _dir: float = 1.0                            ## 1 = kanan, -1 = kiri (dihitung otomatis)
 var _faces: Dictionary = {}
+var _allen_tween: Tween
+var _door_left_x: float = 0.0
+var _door_right_x: float = 0.0
 
 func _ready() -> void:
 	Game._apply_mode(Game.SCENE_INTRO)   # supaya bisa dites langsung dengan F6
@@ -61,6 +72,8 @@ func _ready() -> void:
 
 	_play(allen, "idle", int(_dir))
 	_play(luna, "idle", int(_dir))
+	_add_steps(allen, allen_step_sound)
+	_add_steps(luna, luna_step_sound)
 	await _run()
 
 func _run() -> void:
@@ -86,22 +99,31 @@ func _run() -> void:
 	dialog.close()
 	await get_tree().create_timer(0.4).timeout
 
-	# 3. Berjalan lagi: Luna sampai tepi lubang, Allen berhenti di belakang
+		# 3. Berjalan lagi: Luna ke tepi lubang, Allen terus berjalan sampai tanah bergetar
 	var luna_dist := maxf(_dir * (hole_x - luna.global_position.x), 0.0)
 	var allen_target_x := hole_x - _dir * follow_gap
 	var allen_dist := maxf(_dir * (allen_target_x - allen.global_position.x), 0.0)
-	await _walk_group([[allen, allen_dist], [luna, luna_dist]], second_walk_min_time)
-	_idle(allen)
-	await get_tree().create_timer(0.3).timeout
 
-	# 4. Luna melangkah ke pintu jebakan, pintu terbuka, Luna jatuh
+	var luna_walk_time := 0.0
+	if luna_dist >= 1.0:
+		luna_walk_time = maxf(luna_dist / walk_speed, second_walk_min_time)
+	var step_time := step_over / walk_speed if step_over > 0.0 else 0.0
+	var allen_time := luna_walk_time + step_time + trap_pause
+	_start_allen_walk(allen_dist, allen_time)
+
+	await _walk_group([[luna, luna_dist]], second_walk_min_time)
+
+	# 4. Luna melangkah ke pintu dan terdiam, lalu tanah bergetar (Allen berhenti saat itu)
 	await _step_over(luna)
 	_idle(luna)
 	await get_tree().create_timer(trap_pause).timeout
+	_stop_allen_walk()
 	await _open_trapdoor()
 	await _fall(luna)
+	await get_tree().create_timer(trap_close_delay).timeout
+	await _close_trapdoor()
 	await get_tree().create_timer(1.0).timeout
-
+	
 	# 5. Dialog setelah jatuh
 	await dialog.say("Allen", "Luna?! Luna, answer me!")
 	await dialog.say("Luna", "Ugh... I'm okay! It's pitch black down here, and still no signal.")
@@ -135,17 +157,41 @@ func _walk_group(moves: Array, min_time: float) -> void:
 		t.tween_property(s, "global_position:x", s.global_position.x + _dir * dist, duration)
 	await t.finished
 
+# Allen berjalan terus; durasinya dihitung supaya sampai tepat saat tanah bergetar
+func _start_allen_walk(dist: float, time: float) -> void:
+	if dist < 1.0:
+		_idle(allen)
+		return
+	_play(allen, "walk", int(_dir))
+	_allen_tween = create_tween()
+	_allen_tween.tween_property(allen, "global_position:x", allen.global_position.x + _dir * dist, maxf(time, 0.01))
+	print("[Intro] Allen berjalan %.0f px dalam %.1f detik (%.0f px/detik)" % [dist, time, dist / maxf(time, 0.01)])
+
+func _stop_allen_walk() -> void:
+	if _allen_tween and _allen_tween.is_valid():
+		_allen_tween.kill()
+	_idle(allen)
+
 func _step_over(sprite: AnimatedSprite2D) -> void:
 	if step_over <= 0.0:
 		return
 	_play(sprite, "walk", int(_dir))
 	var t := create_tween()
-	t.tween_property(sprite, "global_position:x", sprite.global_position.x + _dir * step_over, step_over_time)
+	t.tween_property(sprite, "global_position:x", sprite.global_position.x + _dir * step_over, step_over / walk_speed)
 	await t.finished
 
 func _open_trapdoor() -> void:
 	if trapdoor == null:
 		return
+	var left = trapdoor.get_node_or_null("DoorLeft")
+	var right = trapdoor.get_node_or_null("DoorRight")
+
+	# Simpan posisi tertutup, supaya bisa dikembalikan saat menutup
+	if left:
+		_door_left_x = left.position.x
+	if right:
+		_door_right_x = right.position.x
+
 	if trap_sfx:
 		trap_sfx.play()
 
@@ -160,16 +206,39 @@ func _open_trapdoor() -> void:
 	await shake.finished
 
 	# Kedua sisi bergeser membuka
-	var left = trapdoor.get_node_or_null("DoorLeft")
-	var right = trapdoor.get_node_or_null("DoorRight")
 	var open := create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	if left:
-		open.tween_property(left, "position:x", left.position.x - trap_open_distance, trap_open_time)
+		open.tween_property(left, "position:x", _door_left_x - trap_open_distance, trap_open_time)
 	if right:
-		open.tween_property(right, "position:x", right.position.x + trap_open_distance, trap_open_time)
+		open.tween_property(right, "position:x", _door_right_x + trap_open_distance, trap_open_time)
+
 	# Luna mulai jatuh sesaat setelah pintu mulai terbuka
 	await get_tree().create_timer(0.12).timeout
 
+func _close_trapdoor() -> void:
+	if trapdoor == null:
+		return
+	var left = trapdoor.get_node_or_null("DoorLeft")
+	var right = trapdoor.get_node_or_null("DoorRight")
+
+	if trap_sfx:
+		trap_sfx.play()
+
+	# Kedua sisi bergeser kembali ke posisi tertutup
+	var close := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	if left:
+		close.tween_property(left, "position:x", _door_left_x, trap_close_time)
+	if right:
+		close.tween_property(right, "position:x", _door_right_x, trap_close_time)
+	await close.finished
+
+	# Hentakan kecil saat menutup rapat
+	var base_y := trapdoor.position.y
+	var thud := create_tween()
+	thud.tween_property(trapdoor, "position:y", base_y + 3.0, 0.05)
+	thud.tween_property(trapdoor, "position:y", base_y, 0.08)
+	await thud.finished
+	
 func _fall(sprite: AnimatedSprite2D) -> void:
 	_play(sprite, "jump", int(_dir))
 	var t := create_tween().set_parallel(true)
@@ -179,6 +248,12 @@ func _fall(sprite: AnimatedSprite2D) -> void:
 	await t.finished
 	sprite.visible = false
 
+func _add_steps(sprite: AnimatedSprite2D, stream: AudioStream) -> void:
+	if sprite == null or stream == null:
+		return
+	var fs := Footsteps.new()
+	add_child(fs)
+	fs.setup(sprite, stream, step_volume_db, step_frames)
 # ------------------------
 # ANIMASI (mendukung idle_right/idle_left maupun idle + flip_h)
 # face: 1 = kanan, -1 = kiri, 0 = pakai arah terakhir

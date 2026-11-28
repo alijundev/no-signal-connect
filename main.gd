@@ -9,6 +9,17 @@ var underground_levels: Array[String] = [
 	"res://levels/stage_02/underground_02.tscn"
 ]
 
+# Musik per stage (urutan sama dengan daftar level). Kalau stage lebih banyak
+# daripada daftar ini, lagu terakhir dipakai. Kosongkan daftar kalau tidak ada musik.
+const ALLEN_MUSIC: Array[String] = [
+	"res://assets/audio/stage_allen1.mp3",
+]
+const LUNA_MUSIC: Array[String] = [
+	"res://assets/audio/stage_luna1.mp3",
+]
+const ALLEN_VOLUME_DB := 4.0   # musik stage Allen (makin mendekati 0 makin keras)
+const LUNA_VOLUME_DB := -10 # musik stage Luna
+
 @onready var top_container: SubViewportContainer = $TopContainer
 @onready var bottom_container: SubViewportContainer = $BottomContainer
 @onready var top_viewport: SubViewport = $TopContainer/TopViewport
@@ -20,6 +31,7 @@ var is_switching: bool = false
 func _ready() -> void:
 	GameBridge.stage_changed.connect(_load_stage)
 	GameBridge.signal_state_changed.connect(_on_signal_state_changed)
+	GameBridge.game_won.connect(_on_game_won)
 
 	_create_fade_rect()
 	_show_top_screen()
@@ -40,6 +52,18 @@ func _create_fade_rect() -> void:
 	layer.add_child(fade_rect)
 
 # ------------------------
+# MUSIK
+# ------------------------
+func _play_stage_music(list: Array[String], volume_db: float) -> void:
+	if list.is_empty():
+		return
+	var path := list[mini(GameBridge.current_stage, list.size() - 1)]
+	Game.play_music(path, volume_db)
+
+func _on_game_won() -> void:
+	Game.stop_music(2.0)
+
+# ------------------------
 # TAMPILAN LAYAR
 # ------------------------
 func _show_top_screen() -> void:
@@ -49,6 +73,7 @@ func _show_top_screen() -> void:
 	_set_level_active(bottom_viewport, false)   # Luna dibekukan sampai giliran dia
 	GameBridge.active_screen = GameBridge.Screen.TOP
 	GameBridge.screen_switched.emit(GameBridge.active_screen)
+	_play_stage_music(ALLEN_MUSIC, ALLEN_VOLUME_DB)   # musik stage Allen         # musik stage Allen
 
 func _show_bottom_screen() -> void:
 	top_container.visible = false
@@ -57,6 +82,7 @@ func _show_bottom_screen() -> void:
 	_set_level_active(top_viewport, false)
 	GameBridge.active_screen = GameBridge.Screen.BOTTOM
 	GameBridge.screen_switched.emit(GameBridge.active_screen)
+	_play_stage_music(LUNA_MUSIC, LUNA_VOLUME_DB)     # musik stage Luna            # musik stage Luna
 
 func _set_level_active(viewport: SubViewport, active: bool) -> void:
 	if viewport.get_child_count() == 0:
@@ -79,7 +105,7 @@ func _load_stage(index: int) -> void:
 	top_viewport.add_child(new_top_scene)
 	bottom_viewport.add_child(new_bottom_scene)
 
-	# Stage baru selalu dimulai dari layar Allen
+	# Stage baru selalu dimulai dari layar Allen (musik Allen ikut dimulai)
 	_show_top_screen()
 
 # ------------------------
@@ -95,9 +121,11 @@ func switch_to_underground() -> void:
 		return
 	is_switching = true
 
+	Game.stop_music(0.8)   # musik Allen memudar bersamaan dengan layar menghitam
+
 	var tween := create_tween()
 	tween.tween_property(fade_rect, "modulate:a", 1.0, 0.8)   # layar jadi hitam
-	tween.tween_callback(_show_bottom_screen)                 # tukar layar saat gelap
+	tween.tween_callback(_show_bottom_screen)                 # tukar layar (musik Luna mulai)
 	tween.tween_interval(0.6)                                 # jeda layar kosong
 	tween.tween_property(fade_rect, "modulate:a", 0.0, 0.8)   # layar terang lagi
 	tween.tween_callback(func(): is_switching = false)

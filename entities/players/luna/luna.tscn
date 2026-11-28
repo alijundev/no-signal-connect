@@ -2,11 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://th6ghmqnm5rg" path="res://entities/players/base_player/base_player.tscn" id="1_2tl0e"]
 [ext_resource type="Script" uid="uid://dyle15e6ypk3i" path="res://entities/players/luna/luna.gd" id="2_2gfy3"]
+[ext_resource type="AudioStream" uid="uid://cdpiapnge3rm" path="res://assets/audio/jump.mp3" id="3_1dnl0"]
+[ext_resource type="AudioStream" uid="uid://bxat8oitxcrkl" path="res://assets/audio/walk.mp3" id="3_4w012"]
 [ext_resource type="PackedScene" uid="uid://dps2e2s2kgdeb" path="res://mechanics/laptop_terminal/laptop_terminal.tscn" id="3_s53pv"]
 [ext_resource type="Texture2D" uid="uid://bhhd110cwtp6g" path="res://assets/Character/Programmer(Luna)/attack girl FIX.png" id="4_eersv"]
 [ext_resource type="Texture2D" uid="uid://dsjh5jkyahb8p" path="res://assets/Character/Programmer(Luna)/idle girl FIX.png" id="4_s53pv"]
-[ext_resource type="Texture2D" uid="uid://ca7rcpmi7qrd" path="res://assets/Character/Programmer(Luna)/walk girl FIX.png" id="5_0novs"]
 [ext_resource type="Texture2D" uid="uid://bnn2qs3ve8lgo" path="res://assets/Character/Programmer(Luna)/Jump girl FIX.png" id="6_1dnl0"]
+[ext_resource type="Texture2D" uid="uid://cccqgxwa0vamn" path="res://assets/Character/Programmer(Luna)/walk girl FIX FIX.png" id="8_1dnl0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_okpil"]
 atlas = ExtResource("4_eersv")
@@ -81,51 +83,51 @@ atlas = ExtResource("6_1dnl0")
 region = Rect2(320, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4w012"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(320, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tg5mf"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(256, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nn8bi"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(192, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r1pf4"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(128, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6nw1q"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(64, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kqtfl"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(0, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sq7f3"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c48rp"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pnf8m"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(128, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4gksu"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ly66c"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(256, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cccgw"]
-atlas = ExtResource("5_0novs")
+atlas = ExtResource("8_1dnl0")
 region = Rect2(320, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2tl0e"]
@@ -264,6 +266,9 @@ animations = [{
 [node name="Luna" unique_id=486721168 instance=ExtResource("1_2tl0e")]
 script = ExtResource("2_2gfy3")
 assigned_screen = 1
+step_sound = ExtResource("3_4w012")
+step_volume_db = -5.0
+jump_sound = ExtResource("3_1dnl0")
 
 [node name="ColorRect" parent="." index="2"]
 visible = false
@@ -275,4 +280,6 @@ color = Color(1, 0.49803922, 1, 1)
 texture_filter = 1
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_2tl0e")
-animation = &"attack_left"
+animation = &"walk_right"
+frame = 1
+frame_progress = 0.70735186

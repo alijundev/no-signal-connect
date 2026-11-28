@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ca7rcpmi7qrd"
-path="res://.godot/imported/walk girl FIX.png-e4dff1fc4cbee1497d1ee5ae0d12b6e7.ctex"
+uid="uid://di5mmu0icmiep"
+path="res://.godot/imported/spritesheet.png-9d35601e48751003ad250c24610b968f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Character/Programmer(Luna)/walk girl FIX.png"
-dest_files=["res://.godot/imported/walk girl FIX.png-e4dff1fc4cbee1497d1ee5ae0d12b6e7.ctex"]
+source_file="res://assets/Efek/scifi_warp_001/scifi_warp_001_small_green/spritesheet.png"
+dest_files=["res://.godot/imported/spritesheet.png-9d35601e48751003ad250c24610b968f.ctex"]
 
 [params]
 

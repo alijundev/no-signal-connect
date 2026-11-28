@@ -14,9 +14,13 @@ const Pal = preload("res://scripts/ui/retro_theme.gd")
 @export var outline := 2
 @export var cycle_speed := 5.0 ## langkah ganti warna per detik
 @export var bob_height := 2
-@export var palette := PackedColorArray([
-	Color("#ffffff"), Color("#a8f0ff"), Color("#c9b3ff"), Color("#ffb3dc"),
+@export var palette := PackedColorArray([          ## warna bagian pertama ("NO SIGNAL,")
+	Color("#ffffff"), Color("#4eb9d0"), Color("#cbdbfc"), Color("#4eb9d0"),
 ])
+@export var palette_b := PackedColorArray([        ## warna bagian kedua ("CONNECT!")
+	Color("#ffffff"), Color("#ff98bc"), Color("#fbf236"), Color("#ff98bc"),
+])
+@export var second_part := "CONNECT"               ## huruf mulai dari kata ini memakai palette_b
 
 ## Jumlah huruf yang tampil (-1 = semua). Dipakai efek mengetik di intro.
 var visible_chars := -1:
@@ -68,6 +72,7 @@ func _draw() -> void:
 	var x0 := floorf((size.x - total) * 0.5)
 	var baseline := floorf((size.y - extrude - font.get_height(font_size)) * 0.5 + font.get_ascent(font_size)) + _bob
 
+	var split := text.find(second_part) if second_part != "" else -1
 	for i in count:
 		var ch := text[i]
 		if ch == " ":
@@ -82,7 +87,8 @@ func _draw() -> void:
 		# 3) outline huruf depan
 		_outline(font, p, ch)
 		# 4) isi huruf, warna berputar per huruf
-		var color := palette[(i + _step) % palette.size()]
+		var pal := palette_b if (split >= 0 and i >= split) else palette
+		var color := pal[(i + _step) % pal.size()]
 		draw_string(font, p, ch, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
 
 
