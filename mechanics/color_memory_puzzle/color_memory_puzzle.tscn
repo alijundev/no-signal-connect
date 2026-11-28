@@ -1,0 +1,68 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://mechanics/color_memory_puzzle/color_memory_puzzle.gd" id="1_cmp"]
+
+[node name="ColorMemoryPuzzle" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_cmp")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -130.0
+offset_right = 180.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "[ COLOR MEMORY ]"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Perhatikan urutan warna..."
+horizontal_alignment = 1
+
+[node name="ColorGrid" type="GridContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 2
+
+[node name="RedButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
+layout_mode = 2
+focus_mode = 0
+text = "MERAH"
+
+[node name="BlueButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
+layout_mode = 2
+focus_mode = 0
+text = "BIRU"
+
+[node name="GreenButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
+layout_mode = 2
+focus_mode = 0
+text = "HIJAU"
+
+[node name="YellowButton" type="Button" parent="PanelContainer/VBoxContainer/ColorGrid"]
+layout_mode = 2
+focus_mode = 0
+text = "KUNING"
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Tutup"

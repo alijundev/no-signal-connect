@@ -93,20 +93,27 @@ func _set_level_active(viewport: SubViewport, active: bool) -> void:
 # STAGE
 # ------------------------
 func _load_stage(index: int) -> void:
-	if top_viewport.get_child_count() > 0:
-		top_viewport.get_child(0).queue_free()
+	if index < 0 or index >= surface_levels.size() or index >= underground_levels.size():
+		push_warning("Indeks stage tidak valid: %d" % index)
+		return
 
-	if bottom_viewport.get_child_count() > 0:
-		bottom_viewport.get_child(0).queue_free()
+	is_switching = false
+	_clear_viewport(top_viewport)
+	_clear_viewport(bottom_viewport)
 
-	var new_top_scene: Node2D = load(surface_levels[index]).instantiate()
-	var new_bottom_scene: Node2D = load(underground_levels[index]).instantiate()
+	var new_top_scene: Node2D = (load(surface_levels[index]) as PackedScene).instantiate() as Node2D
+	var new_bottom_scene: Node2D = (load(underground_levels[index]) as PackedScene).instantiate() as Node2D
 
 	top_viewport.add_child(new_top_scene)
 	bottom_viewport.add_child(new_bottom_scene)
 
 	# Stage baru selalu dimulai dari layar Allen (musik Allen ikut dimulai)
 	_show_top_screen()
+
+func _clear_viewport(viewport: SubViewport) -> void:
+	for child: Node in viewport.get_children():
+		viewport.remove_child(child)
+		child.queue_free()
 
 # ------------------------
 # PINDAH KE LUNA

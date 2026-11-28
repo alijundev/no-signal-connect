@@ -2,19 +2,35 @@ extends Area2D
 
 const RetroTheme = preload("res://scripts/ui/retro_theme.gd")
 
+@export var puzzle_scene: PackedScene
+
 @onready var prompt_label: Label = $PromptLabel
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var cable_puzzle: CanvasLayer = $CablePuzzle
 
+var _active_puzzle: CanvasLayer = null
 var is_activated: bool = false
 var player_in_range: bool = false
 
 func _ready() -> void:
+	_setup_puzzle()
 	_style_prompt_label()
 	prompt_label.visible = false
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	cable_puzzle.puzzle_solved.connect(activate_tower)
+
+func _setup_puzzle() -> void:
+	var default_puzzle: CanvasLayer = get_node_or_null("CablePuzzle") as CanvasLayer
+	if puzzle_scene != null:
+		if default_puzzle != null:
+			remove_child(default_puzzle)
+			default_puzzle.queue_free()
+		_active_puzzle = puzzle_scene.instantiate() as CanvasLayer
+		add_child(_active_puzzle)
+	else:
+		_active_puzzle = default_puzzle
+
+	if _active_puzzle != null and _active_puzzle.has_signal(&"puzzle_solved"):
+		_active_puzzle.connect(&"puzzle_solved", activate_tower)
 
 func _style_prompt_label() -> void:
 	prompt_label.label_settings = null
@@ -39,7 +55,8 @@ func _on_body_exited(body: Node2D) -> void:
 	if body is BasePlayer:
 		player_in_range = false
 		prompt_label.visible = false
-		cable_puzzle.close_puzzle()
+		if _active_puzzle != null and _active_puzzle.has_method(&"close_puzzle"):
+			_active_puzzle.call(&"close_puzzle")
 
 func activate_tower() -> void:
 	is_activated = true
@@ -50,4 +67,6 @@ func activate_tower() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if player_in_range and not is_activated and GameBridge.active_screen == GameBridge.Screen.TOP and event.is_action_pressed("interact"):
-		cable_puzzle.open_puzzle()
+		if _active_puzzle != null and not _active_puzzle.visible and _active_puzzle.has_method(&"open_puzzle"):
+			_active_puzzle.call(&"open_puzzle")
+			get_viewport().set_input_as_handled()

@@ -10,6 +10,8 @@ extends CharacterBody2D
 @onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 
 func _ready() -> void:
+	direction = 1.0 if direction >= 0.0 else -1.0
+	wall_check.target_position.x = absf(wall_check.target_position.x) * direction
 	health_comp.died.connect(queue_free)
 	_update_visual()
 
@@ -19,7 +21,7 @@ func _physics_process(delta: float) -> void:
 
 	if wall_check.is_colliding():
 		direction *= -1.0
-		wall_check.target_position.x *= -1.0
+		wall_check.target_position.x = absf(wall_check.target_position.x) * direction
 		_update_visual()
 
 	velocity.x = direction * move_speed
