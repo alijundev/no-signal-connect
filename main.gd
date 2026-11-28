@@ -61,7 +61,8 @@ func _play_stage_music(list: Array[String], volume_db: float) -> void:
 	Game.play_music(path, volume_db)
 
 func _on_game_won() -> void:
-	Game.stop_music(2.0)
+	Game.stop_music(1.2)
+	Game.go_to(Game.SCENE_OUTRO)
 
 # ------------------------
 # TAMPILAN LAYAR

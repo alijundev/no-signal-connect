@@ -91,17 +91,15 @@ func _run() -> void:
 	_idle(luna)
 	await get_tree().create_timer(0.4).timeout
 
-	# 2. Dialog sebelum jatuh
-	await dialog.say("Luna", "Allen, check your phone. Do you have any signal?")
-	await dialog.say("Allen", "Nothing. Zero bars. That's strange, it was fine a minute ago.")
-	await dialog.say("Luna", "The whole network just went down. It's a complete signal blackout.")
-	await dialog.say("Allen", "A blackout across the entire area? That can't be a coincidence.")
-	await dialog.say("Luna", "The signal tower at the end of this road might still be working.")
-	await dialog.say("Allen", "Fine, but stay close. I don't like how quiet it is.")
+	# 2. Dialog sebelum mendekati menara
+	await dialog.say("Luna", "How was work today, Big bro?")
+	await dialog.say("Allen", "Nothing special, really. They had me fix a few damaged server cables.")
+	await dialog.say("Luna", "I see. Speaking of that, why isn't my laptop picking up any signal at all?")
+	await dialog.say("Allen", "Probably just a technical glitch.")
 	dialog.close()
 	await get_tree().create_timer(0.4).timeout
 
-		# 3. Berjalan lagi: Luna ke tepi lubang, Allen terus berjalan sampai tanah bergetar
+	# 3. Berjalan lagi: Luna mendekati lubang/arah menara, Allen mengikuti di belakang
 	var luna_dist := maxf(_dir * (hole_x - luna.global_position.x), 0.0)
 	var allen_target_x := hole_x - _dir * follow_gap
 	var allen_dist := maxf(_dir * (allen_target_x - allen.global_position.x), 0.0)
@@ -115,21 +113,23 @@ func _run() -> void:
 
 	await _walk_group([[luna, luna_dist]], second_walk_min_time)
 
-	# 4. Luna melangkah ke pintu dan terdiam, lalu tanah bergetar (Allen berhenti saat itu)
+	# 4. Luna melangkah ke tepi, berucap, lalu terjatuh ke underground
 	await _step_over(luna)
 	_idle(luna)
-	await get_tree().create_timer(trap_pause).timeout
 	_stop_allen_walk()
+	await dialog.say("Luna", "What if I get closer to that signal tower—")
+	dialog.close()
+	await get_tree().create_timer(trap_pause).timeout
 	await _open_trapdoor()
 	await _fall(luna)
 	await get_tree().create_timer(trap_close_delay).timeout
 	await _close_trapdoor()
-	await get_tree().create_timer(1.0).timeout
-	
+	await get_tree().create_timer(0.8).timeout
+
 	# 5. Dialog setelah jatuh
-	await dialog.say("Allen", "Luna?! Luna, answer me!")
-	await dialog.say("Luna", "Ugh... I'm okay! It's pitch black down here, and still no signal.")
-	await dialog.say("Allen", "Stay there. I'm coming down.")
+	await dialog.say("Allen", "!!!")
+	await dialog.say("Allen", "Luna, are you okay? Use your Neurosync to stay connected with me. I'll figure out a way to get your signal back and help you out.")
+	await dialog.say("Luna", "Ouch... Alright. Something feels off down here too.")
 	dialog.close()
 	await get_tree().create_timer(0.4).timeout
 

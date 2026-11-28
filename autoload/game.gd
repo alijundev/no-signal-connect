@@ -8,6 +8,7 @@ const SCENE_MAIN_MENU := "res://scenes/main_menu.tscn"
 const MUSIC_MENU := "res://assets/audio/main menu.mp3"   # sesuaikan nama file
 const SCENE_GAME := "res://main.tscn"
 const SCENE_INTRO := "res://scenes/intro.tscn"
+const SCENE_OUTRO := "res://scenes/outro.tscn"
 const SCENE_SETTINGS := "res://scenes/settings.tscn"
 const SCENE_FEEDBACK := "res://scenes/feedback.tscn"
 const SCENE_CREDITS := "res://scenes/credits.tscn"
@@ -229,7 +230,7 @@ func go_to(path: String) -> void:
 	if _busy:
 		return
 	_busy = true
-	if path == SCENE_INTRO or path == SCENE_GAME:
+	if path == SCENE_INTRO or path == SCENE_GAME or path == SCENE_OUTRO:
 		stop_music(0.6)
 	_fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP # blokir klik saat transisi
 	await _run_fade(0.0, 1.0, 0.35)
@@ -251,7 +252,7 @@ func quit_game() -> void:
 	get_tree().quit()
 
 func _apply_mode(path: String) -> void:
-	_in_game = (path == SCENE_GAME or path == SCENE_INTRO)
+	_in_game = (path == SCENE_GAME or path == SCENE_INTRO or path == SCENE_OUTRO)
 	var win := get_tree().root
 	win.content_scale_size = GAME_SIZE if _in_game else MENU_SIZE
 	win.theme = null if _in_game else RetroTheme.build()
